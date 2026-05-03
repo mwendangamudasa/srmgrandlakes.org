@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SRM Network — Grand Lakes & Africa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Rajdhani:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy: #0A1628;
+      --navy-mid: #0D1F3C;
+      --navy-light: #162844;
+      --red: #C0392B;
+      --red-dark: #96281B;
+      --red-glow: rgba(192, 57, 43, 0.15);
+      --gold: #B8860B;
+      --gold-light: #D4A017;
+      --white: #F4F6F9;
+      --white-dim: rgba(244, 246, 249, 0.7);
+      --white-faint: rgba(244, 246, 249, 0.15);
+      --border: rgba(244, 246, 249, 0.08);
+      --font-display: 'Cormorant Garamond', serif;
+      --font-ui: 'Rajdhani', sans-serif;
+      --font-body: 'Source Sans 3', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAVIGATION ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(10,22,40,0.95), transparent);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-logo-mark {
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-ui);
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--red);
+      letter-spacing: 0.05em;
+      position: relative;
+    }
+
+    .nav-logo-mark::before {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border: 1px solid rgba(192,57,43,0.3);
+    }
+
+    .nav-logo-text {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--white-dim);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      text-decoration: none;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--red);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cta {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      padding: 10px 24px;
+      border: 1px solid var(--red);
+      background: transparent;
+      transition: all 0.3s;
+    }
+
+    .nav-cta:hover {
+      background: var(--red);
+      color: var(--white);
+    }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 60px 80px;
+      overflow: hidden;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(244,246,249,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(244,246,249,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at 60% 50%, black 30%, transparent 75%);
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 20%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(192,57,43,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-glow-2 {
+      position: absolute;
+      bottom: -10%;
+      left: 20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(22,40,68,0.8) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 32px;
+      animation: fadeInUp 0.8s ease both;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--red);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 7vw, 96px);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 24px;
+      animation: fadeInUp 0.8s 0.1s ease both;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--white-dim);
+    }
+
+    .hero-title .accent {
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      margin-bottom: 48px;
+      max-width: 560px;
+      animation: fadeInUp 0.8s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      animation: fadeInUp 0.8s 0.3s ease both;
+    }
+
+    .btn-primary {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      padding: 16px 40px;
+      background: var(--red);
+      border: 1px solid var(--red);
+      transition: all 0.3s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(192,57,43,0.3);
+    }
+
+    .btn-secondary {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.3s;
+    }
+
+    .btn-secondary::after {
+      content: '→';
+      transition: transform 0.3s;
+    }
+
+    .btn-secondary:hover { color: var(--white); }
+    .btn-secondary:hover::after { transform: translateX(4px); }
+
+    .hero-stats {
+      position: absolute;
+      right: 60px;
+      bottom: 80px;
+      display: flex;
+      gap: 48px;
+      animation: fadeInUp 0.8s 0.4s ease both;
+    }
+
+    .stat {
+      text-align: right;
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: var(--font-ui);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      margin-top: 4px;
+    }
+
+    .stat-line {
+      width: 1px;
+      height: 60px;
+      background: var(--border);
+      align-self: center;
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px;
+    }
+
+    .section-tag {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-tag::before {
+      content: '';
+      width: 30px;
+      height: 1px;
+      background: var(--red);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4vw, 60px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .section-title em { font-style: italic; color: var(--white-dim); }
+
+    /* ── ABOUT ── */
+    #about {
+      padding: 120px 0;
+      background: linear-gradient(to bottom, var(--navy), var(--navy-mid));
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-text p {
+      color: var(--white-dim);
+      font-size: 17px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+
+    .about-text p strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-card {
+      background: var(--navy-light);
+      border: 1px solid var(--border);
+      padding: 40px;
+      position: relative;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 60px;
+      background: var(--red);
+    }
+
+    .about-card-title {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 24px;
+    }
+
+    .about-pillars {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .pillar {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pillar:last-child { border-bottom: none; }
+
+    .pillar-num {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--red);
+      opacity: 0.4;
+      line-height: 1;
+      min-width: 32px;
+    }
+
+    .pillar-text {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--white-dim);
+      line-height: 1.6;
+    }
+
+    .pillar-text strong {
+      display: block;
+      color: var(--white);
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    /* ── WHO WE SERVE ── */
+    #who {
+      padding: 120px 0;
+      background: var(--navy-mid);
+    }
+
+    .who-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 80px;
+    }
+
+    .who-header .section-tag {
+      justify-content: center;
+    }
+
+    .who-header .section-tag::before { display: none; }
+
+    .profiles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .profile-card {
+      background: var(--navy-mid);
+      padding: 48px 36px;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--red);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .profile-card:hover { background: var(--navy-light); }
+    .profile-card:hover::after { transform: scaleX(1); }
+
+    .profile-icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      font-size: 20px;
+    }
+
+    .profile-title {
+      font-family: var(--font-ui);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .profile-desc {
+      font-size: 14px;
+      color: var(--white-dim);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── MISSION ── */
+    #mission {
+      padding: 120px 0;
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #mission::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+    }
+
+    .mission-inner {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .mission-quote {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3vw, 42px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--white-dim);
+      border-left: 2px solid var(--red);
+      padding-left: 32px;
+      margin-bottom: 40px;
+    }
+
+    .mission-points {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .mission-point {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .mission-point-line {
+      width: 1px;
+      min-height: 60px;
+      background: linear-gradient(to bottom, var(--red), transparent);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .mission-point-content h4 {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .mission-point-content p {
+      font-size: 15px;
+      color: var(--white-dim);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── DISCLAIMER ── */
+    .disclaimer-bar {
+      background: var(--navy-light);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 24px 60px;
+      text-align: center;
+    }
+
+    .disclaimer-bar p {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--white-dim);
+      text-transform: uppercase;
+    }
+
+    .disclaimer-bar span {
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    /* ── APPLY ── */
+    #apply {
+      padding: 140px 0;
+      background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy) 100%);
+      position: relative;
+    }
+
+    #apply::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    .apply-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+
+    .apply-text .section-title {
+      margin-bottom: 20px;
+    }
+
+    .apply-text p {
+      font-size: 16px;
+      color: var(--white-dim);
+      font-weight: 300;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .apply-requirements {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .req-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--white-dim);
+    }
+
+    .req-item::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+
+    .apply-form-box {
+      background: var(--navy-light);
+      border: 1px solid var(--border);
+      padding: 56px 48px;
+      position: relative;
+    }
+
+    .apply-form-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--red), transparent);
+    }
+
+    .apply-form-box h3 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .apply-form-box p {
+      font-size: 14px;
+      color: var(--white-dim);
+      margin-bottom: 36px;
+      font-weight: 300;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(10,22,40,0.8);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 15px;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.3s;
+      -webkit-appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--red);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group select option {
+      background: var(--navy-mid);
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--red);
+      border: none;
+      color: var(--white);
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 8px;
+    }
+
+    .form-submit:hover {
+      background: var(--red-dark);
+      box-shadow: 0 8px 30px rgba(192,57,43,0.3);
+    }
+
+    .form-note {
+      font-size: 12px;
+      color: var(--white-faint);
+      text-align: center;
+      margin-top: 16px;
+      font-weight: 300;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      padding: 100px 0;
+      background: var(--navy-mid);
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      margin-top: 60px;
+    }
+
+    .contact-item {
+      background: var(--navy-mid);
+      padding: 40px 36px;
+    }
+
+    .contact-item-label {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+
+    .contact-item-value {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--white);
+    }
+
+    .contact-item-value a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .contact-item-value a:hover { color: var(--red); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      border-top: 1px solid var(--border);
+      padding: 40px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+    }
+
+    .footer-logo span { color: var(--red); }
+
+    .footer-disclaimer {
+      font-size: 12px;
+      color: rgba(244,246,249,0.3);
+      font-weight: 300;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .footer-lang {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-lang a {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white-dim);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-lang a:hover { color: var(--red); }
+    .footer-lang a.active { color: var(--red); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 20px 30px; }
+      .nav-links { display: none; }
+      #hero { padding: 120px 30px 80px; }
+      .hero-stats { right: 30px; gap: 24px; }
+      .container { padding: 0 30px; }
+      .about-grid, .mission-inner, .apply-inner { grid-template-columns: 1fr; gap: 48px; }
+      .profiles-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 20px; text-align: center; }
+      .footer-disclaimer { max-width: 100%; }
+      .disclaimer-bar { padding: 20px 30px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <div class="nav-logo">
+      <div class="nav-logo-mark">SRM</div>
+      <div class="nav-logo-text">Grand Lakes & Africa</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#who">Who We Serve</a></li>
+      <li><a href="#mission">Mission</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#apply" class="nav-cta">Apply Now</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-content">
+      <div class="hero-tag">Closed Professional Network</div>
+      <h1 class="hero-title">
+        Security Risk<br/>
+        <em>Monitoring</em><br/>
+        <span class="accent">Network</span>
+      </h1>
+      <p class="hero-subtitle">Grand Lakes & Africa — Strategic Intelligence. Operational Clarity. Vetted Professionals.</p>
+      <div class="hero-actions">
+        <a href="#apply" class="btn-primary">Request Membership</a>
+        <a href="#about" class="btn-secondary">Learn More</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-number">10+</div>
+        <div class="stat-label">Countries</div>
+      </div>
+      <div class="stat-line"></div>
+      <div class="stat">
+        <div class="stat-number">5</div>
+        <div class="stat-label">Sectors</div>
+      </div>
+      <div class="stat-line"></div>
+      <div class="stat">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Vetted</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER BAR -->
+  <div class="disclaimer-bar">
+    <p><span>Notice:</span> The SRM Network is not a recruitment or job placement service. It is a closed security cluster for vetted professionals dedicated to strategic analysis and operational intelligence.</p>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <div class="section-tag">Who We Are</div>
+          <h2 class="section-title">A Closed Network for <em>Those Who Operate</em> in Complexity</h2>
+          <p>The <strong>Security Risk Monitoring (SRM) Network — Grand Lakes & Africa</strong> is a closed, vetted professional network operating at the intersection of security, humanitarian action, diplomacy, and policy across the Great Lakes region and the African continent.</p>
+          <p>We bring together <strong>experienced professionals</strong> who share a commitment to rigorous analysis, operational integrity, and strategic intelligence sharing in some of the world's most complex environments.</p>
+          <p>Membership is by application only. Every member is individually vetted. Access is granted — not assumed.</p>
+        </div>
+        <div class="about-visual reveal">
+          <div class="about-card">
+            <div class="about-card-title">Network Pillars</div>
+            <div class="about-pillars">
+              <div class="pillar">
+                <div class="pillar-num">01</div>
+                <div class="pillar-text">
+                  <strong>Strategic Analysis</strong>
+                  Rigorous, context-driven security and risk assessments across the region.
+                </div>
+              </div>
+              <div class="pillar">
+                <div class="pillar-num">02</div>
+                <div class="pillar-text">
+                  <strong>Intelligence Sharing</strong>
+                  Trusted exchange of operational intelligence among vetted professionals.
+                </div>
+              </div>
+              <div class="pillar">
+                <div class="pillar-num">03</div>
+                <div class="pillar-text">
+                  <strong>Professional Networking</strong>
+                  Building durable connections across security, humanitarian, and policy sectors.
+                </div>
+              </div>
+              <div class="pillar">
+                <div class="pillar-num">04</div>
+                <div class="pillar-text">
+                  <strong>Operational Integrity</strong>
+                  Every member bound by a Code of Conduct and Confidentiality Agreement.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO WE SERVE -->
+  <section id="who">
+    <div class="container">
+      <div class="who-header reveal">
+        <div class="section-tag">Membership</div>
+        <h2 class="section-title">Who <em>Belongs</em> in This Network</h2>
+        <p style="color: var(--white-dim); font-size: 16px; font-weight: 300;">The SRM Network is designed for professionals with demonstrated experience in complex, high-stakes environments across Africa and the Great Lakes region.</p>
+      </div>
+      <div class="profiles-grid">
+        <div class="profile-card reveal">
+          <div class="profile-icon">🛡</div>
+          <div class="profile-title">Security Professionals</div>
+          <p class="profile-desc">Security managers, risk analysts, field security officers, and crisis response specialists operating in fragile and conflict-affected states.</p>
+        </div>
+        <div class="profile-card reveal">
+          <div class="profile-icon">🌍</div>
+          <div class="profile-title">Humanitarian Actors</div>
+          <p class="profile-desc">NGO directors, humanitarian coordinators, and protection specialists with operational experience in complex emergencies across the region.</p>
+        </div>
+        <div class="profile-card reveal">
+          <div class="profile-icon">🏛</div>
+          <div class="profile-title">Diplomatic & Policy</div>
+          <p class="profile-desc">Diplomats, embassy staff, policy advisors, and government liaisons engaged with African peace and security architecture.</p>
+        </div>
+        <div class="profile-card reveal">
+          <div class="profile-icon">🔬</div>
+          <div class="profile-title">Researchers & Analysts</div>
+          <p class="profile-desc">Conflict researchers, intelligence analysts, and think tank professionals with substantive expertise on the Great Lakes and African security dynamics.</p>
+        </div>
+        <div class="profile-card reveal">
+          <div class="profile-icon">⚖</div>
+          <div class="profile-title">Legal & Compliance</div>
+          <p class="profile-desc">International law practitioners, compliance officers, and human rights monitors operating within African institutional and legal frameworks.</p>
+        </div>
+        <div class="profile-card reveal">
+          <div class="profile-icon">🤝</div>
+          <div class="profile-title">Civil Society Leaders</div>
+          <p class="profile-desc">Community leaders, peacebuilding practitioners, and civil society representatives with frontline engagement in conflict-affected communities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section id="mission">
+    <div class="container">
+      <div class="mission-inner">
+        <div class="reveal">
+          <div class="section-tag">Our Mission</div>
+          <blockquote class="mission-quote">
+            "Intelligence shared among trusted professionals saves lives and shapes better outcomes."
+          </blockquote>
+          <a href="#apply" class="btn-primary">Join the Network</a>
+        </div>
+        <div class="mission-points reveal">
+          <div class="mission-point">
+            <div class="mission-point-line"></div>
+            <div class="mission-point-content">
+              <h4>Closed & Vetted</h4>
+              <p>Every member undergoes individual review. Membership is not open — it is earned through professional standing, demonstrated expertise, and commitment to the network's principles.</p>
+            </div>
+          </div>
+          <div class="mission-point">
+            <div class="mission-point-line"></div>
+            <div class="mission-point-content">
+              <h4>Confidential by Design</h4>
+              <p>All members sign a binding Code of Conduct and Confidentiality Agreement. Information shared within the network remains within the network.</p>
+            </div>
+          </div>
+          <div class="mission-point">
+            <div class="mission-point-line"></div>
+            <div class="mission-point-content">
+              <h4>Operationally Focused</h4>
+              <p>This is not a theoretical forum. The SRM Network serves professionals who operate in the field — providing practical intelligence, peer support, and strategic analysis that directly informs decision-making.</p>
+            </div>
+          </div>
+          <div class="mission-point">
+            <div class="mission-point-line"></div>
+            <div class="mission-point-content">
+              <h4>Regionally Rooted</h4>
+              <p>Deep focus on the Great Lakes region and the African continent — the complexity, the actors, the dynamics. This is not a generic security network. It is purpose-built for this geography.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPLY -->
+  <section id="apply">
+    <div class="container">
+      <div class="apply-inner">
+        <div class="apply-text reveal">
+          <div class="section-tag">Membership Application</div>
+          <h2 class="section-title">Request to <em>Join</em> the Network</h2>
+          <p>Membership in the SRM Network is by application only. All applications are reviewed individually by the network coordination team. Approved applicants will be contacted directly.</p>
+          <p>Upon approval, you will be required to review and sign the SRM Code of Conduct and Confidentiality Agreement before access is granted.</p>
+          <div class="apply-requirements">
+            <div class="req-item">Demonstrated professional experience in relevant field</div>
+            <div class="req-item">Active engagement in the Great Lakes or African context</div>
+            <div class="req-item">Commitment to confidentiality and network integrity</div>
+            <div class="req-item">Agreement to the SRM Code of Conduct</div>
+            <div class="req-item">Individual vetting by the coordination team</div>
+          </div>
+        </div>
+        <div class="apply-form-box reveal">
+          <h3>Membership Request</h3>
+          <p>All fields are required. Your information is handled in strict confidence.</p>
+          <form id="applicationForm">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" placeholder="Your full name" required/>
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="your@email.com" required/>
+            </div>
+            <div class="form-group">
+              <label>Professional Title</label>
+              <input type="text" placeholder="Your current title or role" required/>
+            </div>
+            <div class="form-group">
+              <label>Organization</label>
+              <input type="text" placeholder="Current organization or affiliation" required/>
+            </div>
+            <div class="form-group">
+              <label>Country of Operation</label>
+              <input type="text" placeholder="Where you currently operate" required/>
+            </div>
+            <div class="form-group">
+              <label>Professional Sector</label>
+              <select required>
+                <option value="" disabled selected>Select your sector</option>
+                <option>Security & Risk Management</option>
+                <option>Humanitarian Operations</option>
+                <option>Diplomacy & Policy</option>
+                <option>Research & Analysis</option>
+                <option>Legal & Compliance</option>
+                <option>Civil Society & Peacebuilding</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Brief Professional Background</label>
+              <textarea placeholder="Briefly describe your experience and why you are applying to the SRM Network..." required></textarea>
+            </div>
+            <button type="submit" class="form-submit">Submit Application</button>
+            <p class="form-note">By submitting, you acknowledge this is a closed network. All applications are reviewed manually. You will be contacted at the email provided.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-tag">Get in Touch</div>
+        <h2 class="section-title">Contact <em>the Network</em></h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-item reveal">
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-value">
+            <a href="mailto:info@srmgrandlakes.org">info@srmgrandlakes.org</a>
+          </div>
+        </div>
+        <div class="contact-item reveal">
+          <div class="contact-item-label">Phone / WhatsApp</div>
+          <div class="contact-item-value">
+            <a href="tel:+12024391448">+1 202 439 1448</a>
+          </div>
+        </div>
+        <div class="contact-item reveal">
+          <div class="contact-item-label">Location</div>
+          <div class="contact-item-value">Washington, D.C. — USA</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <span>SRM</span> Network — Grand Lakes & Africa
+    </div>
+    <p class="footer-disclaimer">
+      The SRM Network is not a recruitment or job placement service. It is a closed, vetted security cluster for strategic and operational analysis, intelligence sharing, and professional networking.
+    </p>
+    <div class="footer-lang">
+      <a href="#" class="active">EN</a>
+      <a href="#">FR</a>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Form submission — connect to Zoho Campaigns form
+    document.getElementById('applicationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('.form-submit');
+      btn.textContent = 'Application Submitted ✓';
+      btn.style.background = '#27ae60';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = 'Submit Application';
+        btn.style.background = '';
+        btn.disabled = false;
+        this.reset();
+      }, 4000);
+    });
+
+    // Smooth nav background
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 60) {
+        nav.style.background = 'rgba(10,22,40,0.98)';
+      } else {
+        nav.style.background = 'linear-gradient(to bottom, rgba(10,22,40,0.95), transparent)';
+      }
+    });
+  </script>
+</body>
+</html>
