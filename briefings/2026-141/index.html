@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SRM Grand Lakes | Daily Security Briefing 2026-141</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600&family=IBM+Plex+Mono:wght@300;400;500&family=Barlow+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--ink:#020c1a;--navy:#05111f;--gold:#c9a84c;--gold2:#e8c56a;--white:#f2ede4;--muted:#6b87a8;--red:#c8303a;--amber:#c97b06;}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);font-family:'Barlow Condensed',sans-serif;}
+canvas.bgc{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+.deck{position:relative;width:100%;height:100%;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;overflow:hidden;transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1);transform:translateX(80px) scale(0.98);}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0) scale(1);}
+.slide.exit{opacity:0;transform:translateX(-80px) scale(0.98);}
+.slide::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.055) 3px,rgba(0,0,0,0.055) 4px);}
+.si{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;padding:36px 56px 32px;}
+.bk{position:absolute;z-index:4;width:26px;height:26px;pointer-events:none;}
+.bk-tl{top:15px;left:15px;border-top:1px solid rgba(201,168,76,0.5);border-left:1px solid rgba(201,168,76,0.5);}
+.bk-tr{top:15px;right:15px;border-top:1px solid rgba(201,168,76,0.5);border-right:1px solid rgba(201,168,76,0.5);}
+.bk-bl{bottom:56px;left:15px;border-bottom:1px solid rgba(201,168,76,0.5);border-left:1px solid rgba(201,168,76,0.5);}
+.bk-br{bottom:56px;right:15px;border-bottom:1px solid rgba(201,168,76,0.5);border-right:1px solid rgba(201,168,76,0.5);}
+.ghost{position:absolute;z-index:1;font-family:'Cormorant Garamond',serif;font-weight:700;line-height:.85;color:transparent;-webkit-text-stroke:1px rgba(201,168,76,.065);pointer-events:none;user-select:none;text-transform:uppercase;white-space:nowrap;}
+.tb{display:flex;justify-content:space-between;align-items:center;padding-bottom:16px;border-bottom:1px solid rgba(201,168,76,.18);margin-bottom:26px;}
+.tb-b{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;}
+.tb-m{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--muted);letter-spacing:.1em;}
+.progress-bar{position:absolute;bottom:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .6s ease;z-index:10;}
+.nav{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:13px;z-index:20;}
+.nav-btn{width:35px;height:35px;border-radius:50%;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);color:var(--gold);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s;user-select:none;}
+.nav-btn:hover{background:rgba(201,168,76,.2);transform:scale(1.1);}
+.nav-dots{display:flex;gap:6px;align-items:center;}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(201,168,76,.22);cursor:pointer;transition:all .3s;}
+.dot.active{background:var(--gold);transform:scale(1.5);}
+.snum{position:absolute;bottom:22px;right:42px;z-index:20;font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(201,168,76,.35);letter-spacing:.15em;}
+.kh{position:absolute;top:18px;right:42px;z-index:20;font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(107,135,168,.38);letter-spacing:.1em;transition:opacity 3s;}
+/* title/sub */
+.st{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.2vw,38px);font-weight:600;color:var(--white);margin-bottom:4px;line-height:1;}
+.ss{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-bottom:20px;}
+/* SLIDE 1 */
+.s1w{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:0 56px 76px;}
+.s1ey{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-bottom:18px;opacity:0;animation:fup .8s .2s forwards;}
+.s1ti{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,7vw,94px);font-weight:600;color:var(--white);line-height:.92;margin-bottom:22px;opacity:0;animation:fup .8s .4s forwards;}
+.s1ti em{color:var(--gold);font-style:italic;}
+.s1rl{width:80px;height:1px;background:var(--gold);margin-bottom:20px;opacity:0;animation:expw .8s .6s forwards;}
+.s1su{font-size:15px;font-weight:300;color:var(--muted);line-height:1.65;max-width:520px;margin-bottom:30px;opacity:0;animation:fup .8s .7s forwards;}
+.s1pl{display:flex;gap:10px;flex-wrap:wrap;opacity:0;animation:fup .8s .9s forwards;}
+.pill{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;border:1px solid rgba(201,168,76,.3);color:var(--gold);padding:7px 16px;text-transform:uppercase;}
+.s1dg{position:absolute;top:0;right:0;width:42%;height:100%;z-index:1;background:linear-gradient(135deg,transparent 0%,rgba(201,168,76,.025) 50%,rgba(201,168,76,.05) 100%);clip-path:polygon(20% 0,100% 0,100% 100%,0% 100%);}
+.s1dl{position:absolute;top:0;right:0;width:42%;height:100%;z-index:1;border-left:1px solid rgba(201,168,76,.1);clip-path:polygon(20% 0,100% 0,100% 100%,0% 100%);}
+/* SLIDE 2 overview */
+.og{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;}
+.ot{position:relative;padding:20px 18px 16px;overflow:hidden;background:rgba(255,255,255,.018);border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;gap:8px;transition:border-color .25s,background .25s;cursor:pointer;}
+.ot:hover{background:rgba(255,255,255,.04);border-color:rgba(201,168,76,.3);}
+.ot::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.ot1::before{background:linear-gradient(90deg,var(--red),transparent);}
+.ot2::before{background:linear-gradient(90deg,var(--amber),transparent);}
+.ot3::before{background:linear-gradient(90deg,#b84018,transparent);}
+.ot4::before{background:linear-gradient(90deg,#1e6fb5,transparent);}
+.on{position:absolute;bottom:12px;right:14px;font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;color:rgba(255,255,255,.03);line-height:1;}
+.otag{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+.ohl{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--white);line-height:1.3;letter-spacing:.02em;}
+.obd{font-size:12px;font-weight:300;color:rgba(107,135,168,.85);line-height:1.6;flex:1;}
+.obg{display:inline-block;align-self:flex-start;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.15em;padding:3px 8px;border:1px solid;text-transform:uppercase;}
+.br{border-color:var(--red);color:#e07070;}.ba{border-color:var(--amber);color:#d4aa40;}.bb{border-color:#2563eb;color:#7aaddb;}
+/* SLIDE 3 ebola */
+.eal{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.25em;color:var(--red);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.eal::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);animation:blnk 1.2s infinite;}
+@keyframes blnk{0%,100%{opacity:1;}50%{opacity:.2;}}
+.eti{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3.8vw,46px);font-weight:600;color:var(--white);line-height:1.05;margin-bottom:18px;}
+.sr{display:flex;gap:13px;margin-bottom:20px;flex-wrap:wrap;}
+.sb{padding:14px 20px;min-width:108px;}
+.sbr{background:rgba(200,48,58,.08);border:1px solid rgba(200,48,58,.28);}
+.sbg{background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.24);}
+.sn{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;line-height:1;}
+.snr{color:var(--red);}.sng{color:var(--gold);font-size:22px;letter-spacing:.04em;}
+.sl{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-top:4px;}
+.ebd{font-size:13.5px;font-weight:300;color:#8dadc8;line-height:1.75;max-width:600px;margin-bottom:20px;}
+.ast{background:rgba(200,48,58,.07);border:1px solid rgba(200,48,58,.3);border-left:3px solid var(--red);padding:13px 17px;max-width:640px;display:flex;gap:13px;}
+.asl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.16em;color:var(--red);text-transform:uppercase;white-space:nowrap;padding-top:2px;}
+.ast p{font-size:12.5px;color:#c09090;line-height:1.65;}
+.ast p strong{color:var(--white);}
+/* SLIDE 4 cuba */
+.tl{display:flex;flex-direction:column;max-width:640px;margin-bottom:18px;}
+.tlr{display:flex;gap:17px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.tldc{display:flex;flex-direction:column;align-items:center;min-width:11px;}
+.tld{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.tlln{flex:1;width:1px;background:rgba(201,168,76,.18);margin-top:4px;}
+.tlyr{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.1em;margin-bottom:4px;}
+.tltx{font-size:13px;font-weight:300;color:#8dadc8;line-height:1.65;}
+.tltx strong{color:var(--white);}
+.ib{background:rgba(201,168,76,.05);border-left:2px solid var(--gold);padding:13px 17px;max-width:640px;}
+.ib p{font-size:13px;font-weight:300;color:#8dadc8;line-height:1.65;}
+.ib p strong{color:var(--gold2);}
+/* SLIDE 5 split */
+.spg{display:grid;grid-template-columns:1fr 1fr;gap:13px;flex:1;}
+.sp{padding:20px;display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.07);}
+.sp::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.spa::before{background:linear-gradient(90deg,var(--amber),transparent);}
+.spr::before{background:linear-gradient(90deg,var(--red),transparent);}
+.spba{background:rgba(201,124,6,.04);}.spbr{background:rgba(200,48,58,.04);}
+.spc{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+.spt{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--white);line-height:1.2;}
+.spb{font-size:12.5px;font-weight:300;color:#7a9ab2;line-height:1.7;flex:1;}
+.spx{padding:9px 11px;font-size:12px;line-height:1.55;border-left:2px solid;margin-top:auto;}
+.spxa{border-color:var(--amber);color:#c4a050;background:rgba(201,124,6,.06);}
+.spxr{border-color:var(--red);color:#c07070;background:rgba(200,48,58,.06);}
+/* SLIDE 6 matrix */
+.mxw{display:flex;gap:20px;flex:1;align-items:flex-start;}
+.mxl{flex:1;min-width:0;}
+.mxr{width:206px;display:flex;flex-direction:column;gap:7px;}
+.axl{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;text-align:center;margin-bottom:5px;}
+.mg{display:grid;grid-template-columns:65px repeat(5,1fr);gap:2px;}
+.mc{height:39px;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:7.5px;letter-spacing:.05em;text-align:center;line-height:1.3;transition:filter .2s;position:relative;cursor:default;}
+.mc:hover{filter:brightness(1.28);}
+.mch{background:transparent;color:var(--muted);font-size:7.5px;height:27px;}
+.mcr{background:transparent;color:var(--muted);font-size:7.5px;justify-content:flex-end;padding-right:7px;text-align:right;}
+.c1{background:rgba(16,185,129,.08);color:#6ee7b7;border:1px solid rgba(16,185,129,.16);}
+.c2{background:rgba(16,185,129,.16);color:#34d399;border:1px solid rgba(16,185,129,.26);}
+.c3{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.22);}
+.c4{background:rgba(245,158,11,.18);color:#f59e0b;border:1px solid rgba(245,158,11,.35);}
+.c5{background:rgba(239,68,68,.14);color:#fca5a5;border:1px solid rgba(239,68,68,.28);}
+.c6{background:rgba(239,68,68,.24);color:#f87171;border:1px solid rgba(239,68,68,.42);}
+.c7{background:rgba(220,38,38,.36);color:#fca5a5;border:1px solid rgba(220,38,38,.6);font-weight:500;}
+.rd{position:absolute;bottom:2px;right:3px;font-family:'IBM Plex Mono',monospace;font-size:7px;color:inherit;opacity:.9;font-weight:500;}
+.rl{display:flex;gap:7px;align-items:flex-start;padding:7px 9px;background:rgba(255,255,255,.015);border-left:2px solid;}
+.rlc{border-color:#ef4444;}.rlh{border-color:var(--amber);}.rlm{border-color:#fbbf24;}.rll{border-color:#10b981;}
+.rlcd{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--muted);white-space:nowrap;padding-top:1px;}
+.rlt{font-size:11px;font-weight:600;color:var(--white);line-height:1.25;}
+.rls{font-size:10px;color:var(--muted);line-height:1.4;}
+/* SLIDE 7 close */
+.cli{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 56px;position:relative;z-index:3;}
+.cltg{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-bottom:18px;}
+.clti{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5.8vw,78px);font-weight:600;color:var(--white);line-height:.92;margin-bottom:18px;}
+.clti em{color:var(--gold);font-style:italic;}
+.clrl{width:56px;height:1px;background:rgba(201,168,76,.5);margin:0 auto 18px;}
+.clbd{font-size:14px;font-weight:300;color:var(--muted);line-height:1.7;max-width:430px;margin-bottom:28px;}
+.clcr{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;}
+.clcd{padding:11px 18px;border:1px solid rgba(201,168,76,.22);min-width:135px;}
+.clcl{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:4px;}
+.clcv{font-size:13px;color:var(--gold2);}
+.clft{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(107,135,168,.35);letter-spacing:.1em;line-height:1.8;}
+/* KEYFRAMES */
+@keyframes fup{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes expw{from{opacity:0;width:0;}to{opacity:1;width:80px;}}
+@keyframes sin{from{opacity:0;transform:translateY(13px);}to{opacity:1;transform:translateY(0);}}
+.slide.active .ot{animation:sin .5s both;}
+.slide.active .ot:nth-child(1){animation-delay:.05s;}
+.slide.active .ot:nth-child(2){animation-delay:.15s;}
+.slide.active .ot:nth-child(3){animation-delay:.25s;}
+.slide.active .ot:nth-child(4){animation-delay:.35s;}
+.slide.active .tlr{animation:sin .4s both;}
+.slide.active .tlr:nth-child(1){animation-delay:.06s;}
+.slide.active .tlr:nth-child(2){animation-delay:.18s;}
+.slide.active .tlr:nth-child(3){animation-delay:.3s;}
+.slide.active .sb{animation:sin .5s both;}
+.slide.active .sb:nth-child(1){animation-delay:.1s;}
+.slide.active .sb:nth-child(2){animation-delay:.2s;}
+.slide.active .sb:nth-child(3){animation-delay:.3s;}
+.slide.active .rl{animation:sin .35s both;}
+.slide.active .rl:nth-child(1){animation-delay:.04s;}.slide.active .rl:nth-child(2){animation-delay:.09s;}
+.slide.active .rl:nth-child(3){animation-delay:.14s;}.slide.active .rl:nth-child(4){animation-delay:.19s;}
+.slide.active .rl:nth-child(5){animation-delay:.24s;}.slide.active .rl:nth-child(6){animation-delay:.29s;}
+.slide.active .rl:nth-child(7){animation-delay:.34s;}.slide.active .rl:nth-child(8){animation-delay:.39s;}
+@media(max-width:700px){
+  .si,.s1w,.cli{padding:22px 18px 26px;}
+  .og,.spg,.mxw{flex-direction:column;grid-template-columns:1fr;}
+  .mxr{width:100%;}
+}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+<div class="progress-bar" id="pb"></div>
+<div class="snum" id="sn">01 / 07</div>
+<div class="kh" id="kh">&#8592; &#8594; ARROW KEYS</div>
+<div class="nav">
+  <div class="nav-btn" id="prev">&#8592;</div>
+  <div class="nav-dots" id="nd"></div>
+  <div class="nav-btn" id="next">&#8594;</div>
+</div>
+
+<!-- SLIDE 1 COVER -->
+<div class="slide active" id="s0">
+  <canvas class="bgc" id="c0"></canvas>
+  <div class="ghost" style="font-size:28vw;bottom:-4%;left:-2%;">SRM</div>
+  <div class="s1dg"></div><div class="s1dl"></div>
+  <div class="bk bk-tl"></div><div class="bk bk-tr"></div><div class="bk bk-bl"></div><div class="bk bk-br"></div>
+  <div class="s1w">
+    <div class="s1ey">Security Risk Monitoring Network &middot; Grand Lakes &amp; Africa</div>
+    <div class="s1ti">Daily<br>Security<br><em>Briefing</em></div>
+    <div class="s1rl"></div>
+    <div class="s1su">Consolidated open-source intelligence across geopolitical, health security, and operational threat domains &mdash; prepared for professionals across the Great Lakes and Africa region.</div>
+    <div class="s1pl">
+      <div class="pill">Thursday, 21 May 2026</div>
+      <div class="pill">Issue 2026-141</div>
+      <div class="pill">Public Release</div>
+      <div class="pill">7 Slides</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2 OVERVIEW -->
+<div class="slide" id="s1">
+  <canvas class="bgc" id="c1"></canvas>
+  <div class="ghost" style="font-size:18vw;top:10%;right:-2%;">TODAY</div>
+  <div class="bk bk-tl"></div><div class="bk bk-tr"></div><div class="bk bk-bl"></div><div class="bk bk-br"></div>
+  <div class="si">
+    <div class="tb"><div class="tb-b">SRM Grand Lakes &middot; Daily Briefing</div><div class="tb-m">21 May 2026 &middot; Issue 2026-141</div></div>
+    <div class="st">Today at a Glance</div>
+    <div class="ss">Four key threat areas &middot; tap any card</div>
+    <div class="og">
+      <div class="ot ot1"><div class="on">01</div><div class="otag">Health Security &middot; Great Lakes</div><div class="ohl">WHO Declares Ebola PHEIC in DRC &amp; Uganda</div><div class="obd">139+ suspected deaths. Direct operational relevance to all field personnel and implementing partners.</div><div class="obg br">Critical</div></div>
+      <div class="ot ot2"><div class="on">02</div><div class="otag">Geopolitical &middot; Americas</div><div class="ohl">U.S. Indicts Raúl Castro &mdash; Cuba Tensions Escalate</div><div class="obd">Federal grand jury issues historic indictment. Most significant U.S.&ndash;Cuba rupture in decades.</div><div class="obg br">High</div></div>
+      <div class="ot ot3"><div class="on">03</div><div class="otag">Geopolitical &middot; Middle East</div><div class="ohl">Iran Talks "Final Stage" &middot; Israel Flotilla Fury</div><div class="obd">Nuclear negotiations at inflection. Ben-Gvir condemnation compounds humanitarian access risk.</div><div class="obg ba">Elevated</div></div>
+      <div class="ot ot4"><div class="on">04</div><div class="otag">Technology &amp; Governance</div><div class="ohl">AI Deception Research &middot; $1.8B Fund Controversy</div><div class="obd">METR documents AI instruction-override. U.S. governance friction from anti-weaponization fund.</div><div class="obg bb">Monitor</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3 EBOLA -->
+<div class="slide" id="s2">
+  <canvas class="bgc" id="c2"></canvas>
+  <div class="ghost" style="font-size:20vw;top:8%;right:-2%;-webkit-text-stroke:1px rgba(200,48,58,.08);">PHEIC</div>
+  <div class="bk bk-tl" style="border-color:rgba(200,48,58,.55);"></div><div class="bk bk-tr" style="border-color:rgba(200,48,58,.55);"></div>
+  <div class="bk bk-bl" style="border-color:rgba(200,48,58,.55);"></div><div class="bk bk-br" style="border-color:rgba(200,48,58,.55);"></div>
+  <div class="si">
+    <div class="tb"><div class="tb-b" style="color:var(--red);">Health Security &middot; Great Lakes Region</div><div class="tb-m">21 May 2026</div></div>
+    <div class="eal">Public Health Emergency of International Concern &mdash; Declared</div>
+    <div class="eti">Ebola Outbreak:<br>DRC &amp; Uganda</div>
+    <div class="sr">
+      <div class="sb sbr"><div class="sn snr">139+</div><div class="sl">Suspected Deaths</div></div>
+      <div class="sb sbr"><div class="sn snr">2</div><div class="sl">Countries Affected</div></div>
+      <div class="sb sbg"><div class="sn sng">PHEIC</div><div class="sl">WHO Classification</div></div>
+    </div>
+    <div class="ebd">The World Health Organization has formally declared the Ebola outbreak spanning the DRC and Uganda a <strong style="color:var(--white)">Public Health Emergency of International Concern</strong> &mdash; the highest alert level under international public health law. Cross-border transmission risk in the Great Lakes corridor remains uncontained.</div>
+    <div class="ast"><div class="asl">SRM Alert</div><p><strong>All personnel and implementing partners active in eastern DRC and Uganda must immediately review health protocols, medical evacuation plans, and PPE requirements.</strong> A dedicated SRM Great Lakes Health Security Advisory is forthcoming.</p></div>
+  </div>
+</div>
+
+<!-- SLIDE 4 US-CUBA -->
+<div class="slide" id="s3">
+  <canvas class="bgc" id="c3"></canvas>
+  <div class="ghost" style="font-size:13vw;bottom:12%;left:-1%;">ESCALATION</div>
+  <div class="bk bk-tl"></div><div class="bk bk-tr"></div><div class="bk bk-bl"></div><div class="bk bk-br"></div>
+  <div class="si">
+    <div class="tb"><div class="tb-b">Geopolitical &middot; U.S.&ndash;Cuba</div><div class="tb-m">21 May 2026</div></div>
+    <div class="st">Indictment of Raúl Castro</div>
+    <div class="ss">Diplomatic escalation &middot; Americas security environment</div>
+    <div class="tl">
+      <div class="tlr"><div class="tldc"><div class="tld" style="background:var(--gold);"></div><div class="tlln"></div></div><div><div class="tlyr">24 February 1996</div><div class="tltx">Cuban military aircraft shot down two civilian planes by Brothers to the Rescue. <strong>Four U.S. citizens killed.</strong> Cuba denies criminal liability.</div></div></div>
+      <div class="tlr"><div class="tldc"><div class="tld" style="background:var(--muted);"></div><div class="tlln"></div></div><div><div class="tlyr">1996 &ndash; 2024</div><div class="tltx">Incident remains a persistent flashpoint across multiple U.S. administrations. No individual accountability established. Cuba declines extradition.</div></div></div>
+      <div class="tlr"><div class="tldc"><div class="tld" style="background:var(--red);"></div></div><div><div class="tlyr">21 May 2026 &mdash; Today</div><div class="tltx">U.S. federal grand jury <strong>formally indicts former Cuban President Raúl Castro.</strong> Most significant legal escalation in decades. Bilateral frameworks near total collapse.</div></div></div>
+    </div>
+    <div class="ib"><p><strong>Operational Implication:</strong> Organizations operating under U.S. federal funding or reliant on U.S.&ndash;Cuba travel and trade frameworks should anticipate accelerating restrictions. Diplomatic channels likely suspended near-term. Monitor State Department advisories closely.</p></div>
+  </div>
+</div>
+
+<!-- SLIDE 5 IRAN/ISRAEL -->
+<div class="slide" id="s4">
+  <canvas class="bgc" id="c4"></canvas>
+  <div class="ghost" style="font-size:18vw;top:10%;right:-2%;">MIDEAST</div>
+  <div class="bk bk-tl"></div><div class="bk bk-tr"></div><div class="bk bk-bl"></div><div class="bk bk-br"></div>
+  <div class="si">
+    <div class="tb"><div class="tb-b">Geopolitical &middot; Middle East</div><div class="tb-m">21 May 2026</div></div>
+    <div class="st">Two Flashpoints &mdash; One Region</div>
+    <div class="ss">Iran nuclear talks at inflection &middot; Israel humanitarian access deteriorates</div>
+    <div class="spg">
+      <div class="sp spa spba">
+        <div class="spc">U.S.&ndash;Iran &middot; Nuclear Track</div>
+        <div class="spt">Negotiations Enter "Final Stages"</div>
+        <div class="spb">Trump describes talks as nearing conclusion; significant gaps remain. Tehran weighs the latest U.S. proposal. The outcome defines the security architecture of the Gulf and cascades into proxy dynamics across the Middle East and Horn of Africa.</div>
+        <div class="spx spxa">&#9889; Breakdown scenario: rapid military posture escalation. Monitor within 72-hour windows as talks progress.</div>
+      </div>
+      <div class="sp spr spbr">
+        <div class="spc">Israel&ndash;Gaza &middot; Humanitarian Track</div>
+        <div class="spt">Ben-Gvir Faces Global Condemnation</div>
+        <div class="spb">Far-right National Security Minister Ben-Gvir attracted international condemnation after footage showed him taunting detained Gaza flotilla activists. The incident amplifies diplomatic pressure and may trigger new access restrictions for humanitarian actors.</div>
+        <div class="spx spxr">&#9889; Organizations active in Gaza or engaged in flotilla-related advocacy should immediately assess reputational and operational exposure.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6 RISK MATRIX -->
+<div class="slide" id="s5">
+  <canvas class="bgc" id="c5"></canvas>
+  <div class="ghost" style="font-size:18vw;bottom:6%;right:-2%;">MATRIX</div>
+  <div class="bk bk-tl"></div><div class="bk bk-tr"></div><div class="bk bk-bl"></div><div class="bk bk-br"></div>
+  <div class="si">
+    <div class="tb"><div class="tb-b">Security Risk Matrix &middot; Today's Events</div><div class="tb-m">Likelihood &times; Impact</div></div>
+    <div class="st">Risk Matrix</div>
+    <div class="ss">Estimated likelihood (horizontal) &times; potential impact (vertical)</div>
+    <div class="mxw">
+      <div class="mxl">
+        <div class="axl">&larr; Likelihood &rarr;</div>
+        <div class="mg">
+          <div class="mc mch"></div>
+          <div class="mc mch">V.Low</div><div class="mc mch">Low</div><div class="mc mch">Possible</div><div class="mc mch">Likely</div><div class="mc mch">Certain</div>
+          <div class="mc mcr">Catastroph.</div>
+          <div class="mc c3"></div><div class="mc c4"></div><div class="mc c5"></div><div class="mc c6"><span class="rd">E1</span></div><div class="mc c7"></div>
+          <div class="mc mcr">Critical</div>
+          <div class="mc c2"></div><div class="mc c3"></div><div class="mc c5"><span class="rd">H1</span></div><div class="mc c6"><span class="rd">G1</span></div><div class="mc c7"></div>
+          <div class="mc mcr">Major</div>
+          <div class="mc c2"></div><div class="mc c3"><span class="rd">G2</span></div><div class="mc c4"><span class="rd">G3</span></div><div class="mc c5"></div><div class="mc c6"></div>
+          <div class="mc mcr">Moderate</div>
+          <div class="mc c1"></div><div class="mc c2"><span class="rd">T1</span></div><div class="mc c3"><span class="rd">P1</span></div><div class="mc c4"></div><div class="mc c5"><span class="rd">T2</span></div>
+          <div class="mc mcr">Minor</div>
+          <div class="mc c1"><span class="rd">I1</span></div><div class="mc c1"></div><div class="mc c2"></div><div class="mc c3"></div><div class="mc c4"></div>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:9px;flex-wrap:wrap;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:7.5px;color:var(--muted);padding-top:3px;text-transform:uppercase;letter-spacing:.1em;">Level:</span>
+          <span style="font-size:8px;font-family:'IBM Plex Mono',monospace;padding:2px 7px;background:rgba(16,185,129,.1);color:#6ee7b7;border:1px solid rgba(16,185,129,.2);">Low</span>
+          <span style="font-size:8px;font-family:'IBM Plex Mono',monospace;padding:2px 7px;background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.22);">Moderate</span>
+          <span style="font-size:8px;font-family:'IBM Plex Mono',monospace;padding:2px 7px;background:rgba(245,158,11,.18);color:#f59e0b;border:1px solid rgba(245,158,11,.35);">High</span>
+          <span style="font-size:8px;font-family:'IBM Plex Mono',monospace;padding:2px 7px;background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid rgba(239,68,68,.38);">Critical</span>
+          <span style="font-size:8px;font-family:'IBM Plex Mono',monospace;padding:2px 7px;background:rgba(220,38,38,.34);color:#fca5a5;border:1px solid rgba(220,38,38,.58);">Severe</span>
+        </div>
+      </div>
+      <div class="mxr">
+        <div class="rl rlc"><div class="rlcd">E1</div><div><div class="rlt">Ebola PHEIC</div><div class="rls">DRC/Uganda &middot; Active spread</div></div></div>
+        <div class="rl rlc"><div class="rlcd">G1</div><div><div class="rlt">U.S.&ndash;Cuba Rupture</div><div class="rls">Castro indictment fallout</div></div></div>
+        <div class="rl rlc"><div class="rlcd">H1</div><div><div class="rlt">Ebola Cross-Border</div><div class="rls">Great Lakes corridor</div></div></div>
+        <div class="rl rlh"><div class="rlcd">G2</div><div><div class="rlt">Israel Humanitarian</div><div class="rls">Ben-Gvir &middot; access risk</div></div></div>
+        <div class="rl rlh"><div class="rlcd">G3</div><div><div class="rlt">Iran Talks Breakdown</div><div class="rls">Gulf escalation risk</div></div></div>
+        <div class="rl rlm"><div class="rlcd">P1</div><div><div class="rlt">U.S. Gov. Instability</div><div class="rls">Anti-weaponization fund</div></div></div>
+        <div class="rl rlm"><div class="rlcd">T2</div><div><div class="rlt">AI Integrity Risk</div><div class="rls">Operational deception</div></div></div>
+        <div class="rl rll"><div class="rlcd">T1/I1</div><div><div class="rlt">Digital Concentration</div><div class="rls">SpaceX IPO &middot; Google DC</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7 CLOSING -->
+<div class="slide" id="s6">
+  <canvas class="bgc" id="c6"></canvas>
+  <div class="ghost" style="font-size:22vw;top:6%;left:50%;transform:translateX(-50%);">SRM</div>
+  <div class="bk bk-tl"></div><div class="bk bk-tr"></div><div class="bk bk-bl"></div><div class="bk bk-br"></div>
+  <div class="tb" style="position:relative;z-index:3;padding:26px 56px 0;border-bottom:1px solid rgba(201,168,76,.12);">
+    <div class="tb-b">SRM Grand Lakes &amp; Africa</div>
+    <div class="tb-m">Briefing Complete &middot; Issue 2026-141</div>
+  </div>
+  <div class="cli">
+    <div class="cltg">Security Risk Monitoring Network</div>
+    <div class="clti">Stay Informed.<br><em>Stay Operational.</em></div>
+    <div class="clrl"></div>
+    <div class="clbd">The SRM Network connects vetted security, humanitarian, diplomatic, and policy professionals across the Great Lakes and Africa. Join a closed, expert community built for the field.</div>
+    <div class="clcr">
+      <div class="clcd"><div class="clcl">Website</div><div class="clcv">srmgrandlakes.org</div></div>
+      <div class="clcd"><div class="clcl">Contact</div><div class="clcv">info@srmgrandlakes.org</div></div>
+      <div class="clcd"><div class="clcl">Phone</div><div class="clcv">+1 202 439 1448</div></div>
+    </div>
+    <div class="clft">Sources: Open-source / OSINT only &middot; For situational awareness &middot; Not operational security advice<br>Great Lakes &middot; Central Africa &middot; East Africa &middot; Washington, DC</div>
+  </div>
+</div>
+
+</div>
+<script>
+function PN(cv,o){
+  const O=Object.assign({n:55,sp:.26,ll:130,r:1.6,col:'rgba(201,168,76,',pulse:false},o);
+  const x=cv.getContext('2d');let W,H,pts=[],raf;
+  function rsz(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  function mk(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*O.sp,vy:(Math.random()-.5)*O.sp,r:O.r+Math.random()*.8,ph:Math.random()*Math.PI*2};}
+  function init(){rsz();pts=[];for(let i=0;i<O.n;i++)pts.push(mk());}
+  function draw(){
+    x.clearRect(0,0,W,H);
+    const t=Date.now()/1000;
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<-20)p.x=W+20;if(p.x>W+20)p.x=-20;
+      if(p.y<-20)p.y=H+20;if(p.y>H+20)p.y=-20;
+      const pl=O.pulse?0.5+0.5*Math.sin(t*1.5+p.ph):1;
+      x.beginPath();x.arc(p.x,p.y,p.r*pl,0,Math.PI*2);
+      x.fillStyle=O.col+'0.5)';x.fill();
+    });
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<O.ll){const a=(1-d/O.ll)*.26;x.beginPath();x.moveTo(pts[i].x,pts[i].y);x.lineTo(pts[j].x,pts[j].y);x.strokeStyle=O.col+a+')';x.lineWidth=.5;x.stroke();}
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  function start(){init();draw();}
+  window.addEventListener('resize',()=>{rsz();pts=[];for(let i=0;i<O.n;i++)pts.push(mk());});
+  return{start};
+}
+function HexBg(cv){
+  const x=cv.getContext('2d');let W,H;
+  function rsz(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  function draw(){
+    x.clearRect(0,0,W,H);
+    const s=40,w=s*2,h=Math.sqrt(3)*s;
+    for(let row=-1;row<H/h+2;row++)for(let col=-1;col<W/w+2;col++){
+      const ox=(row%2===0)?0:w*.75,cx=col*w*1.5+ox,cy=row*h+(row%2===0?0:h*.5);
+      x.beginPath();
+      for(let i=0;i<6;i++){const a=Math.PI/180*(60*i-30);const px=cx+s*Math.cos(a),py=cy+s*Math.sin(a);i===0?x.moveTo(px,py):x.lineTo(px,py);}
+      x.closePath();x.strokeStyle='rgba(201,168,76,.055)';x.lineWidth=.5;x.stroke();
+    }
+  }
+  rsz();draw();window.addEventListener('resize',()=>{rsz();draw();});
+}
+function Ripple(cv){
+  const x=cv.getContext('2d');let W,H,raf;
+  function rsz(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  function draw(){
+    x.clearRect(0,0,W,H);
+    const t=Date.now()/1000,cx=W*.15,cy=H*.72;
+    for(let i=0;i<7;i++){
+      const ph=((t*.22+i/7)%1),r=ph*Math.max(W,H)*.95,a=(1-ph)*.1;
+      x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.strokeStyle='rgba(200,48,58,'+a+')';x.lineWidth=.8;x.stroke();
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  rsz();draw();window.addEventListener('resize',rsz);
+}
+function DiagLn(cv){
+  const x=cv.getContext('2d');let W,H,raf;
+  function rsz(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  function draw(){
+    x.clearRect(0,0,W,H);const t=Date.now()/2200;
+    x.save();x.translate(W*.5,H*.5);x.rotate(-.3);
+    for(let i=-22;i<22;i++){const off=((i*58+t*58*.12)%(58*2))-58;x.beginPath();x.moveTo(-W,off);x.lineTo(W,off);x.strokeStyle='rgba(201,168,76,.045)';x.lineWidth=.5;x.stroke();}
+    x.restore();raf=requestAnimationFrame(draw);
+  }
+  rsz();draw();window.addEventListener('resize',rsz);
+}
+function RadGrid(cv){
+  const x=cv.getContext('2d');let W,H;
+  function rsz(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  function draw(){
+    x.clearRect(0,0,W,H);const cx=W*.5,cy=H*.5;
+    for(let r=55;r<Math.max(W,H);r+=55){x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.strokeStyle='rgba(201,168,76,.04)';x.lineWidth=.5;x.stroke();}
+    for(let a=0;a<360;a+=20){const ra=a*Math.PI/180;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(ra)*Math.max(W,H),cy+Math.sin(ra)*Math.max(W,H));x.strokeStyle='rgba(201,168,76,.028)';x.lineWidth=.5;x.stroke();}
+  }
+  rsz();draw();window.addEventListener('resize',()=>{rsz();draw();});
+}
+function Star(cv){
+  const x=cv.getContext('2d');let W,H,raf;
+  function rsz(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  function draw(){
+    x.clearRect(0,0,W,H);const t=Date.now()/8500,cx=W*.5,cy=H*.55;
+    for(let i=0;i<36;i++){const a=(i/36)*Math.PI*2+t,l=H*.62+Math.sin(t*3+i)*(H*.05);x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(a)*l,cy+Math.sin(a)*l);x.strokeStyle='rgba(201,168,76,.04)';x.lineWidth=.5;x.stroke();}
+    raf=requestAnimationFrame(draw);
+  }
+  rsz();draw();window.addEventListener('resize',rsz);
+}
+window.addEventListener('load',()=>{
+  PN(document.getElementById('c0'),{n:62,sp:.22,ll:145}).start();
+  HexBg(document.getElementById('c1'));
+  Ripple(document.getElementById('c2'));
+  DiagLn(document.getElementById('c3'));
+  PN(document.getElementById('c4'),{n:38,sp:.18,ll:115,col:'rgba(107,135,168,'}).start();
+  RadGrid(document.getElementById('c5'));
+  Star(document.getElementById('c6'));
+});
+const slides=document.querySelectorAll('.slide'),total=slides.length;let cur=0;
+function goTo(n){if(n<0||n>=total)return;slides[cur].classList.remove('active');slides[cur].classList.add('exit');setTimeout(()=>slides[cur].classList.remove('exit'),700);cur=n;slides[cur].classList.add('active');upd();}
+function upd(){document.getElementById('pb').style.width=((cur+1)/total*100)+'%';document.getElementById('sn').textContent=String(cur+1).padStart(2,'0')+' / '+String(total).padStart(2,'0');document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));}
+function buildDots(){const c=document.getElementById('nd');for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.addEventListener('click',()=>goTo(i));c.appendChild(d);}}
+document.getElementById('prev').addEventListener('click',()=>goTo(cur-1));
+document.getElementById('next').addEventListener('click',()=>goTo(cur+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown')goTo(cur+1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')goTo(cur-1);});
+let ts=0,tx=0;
+document.addEventListener('touchstart',e=>{ts=e.touches[0].clientY;tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ts;if(Math.abs(dx)>Math.abs(dy)){if(dx<-50)goTo(cur+1);else if(dx>50)goTo(cur-1);}},{passive:true});
+setTimeout(()=>{const h=document.getElementById('kh');if(h)h.style.opacity='0';},4000);
+buildDots();upd();
+</script>
+</body>
+</html>
