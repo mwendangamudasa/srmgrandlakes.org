@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SRM | Sénégal — Three Scenarios · 25 May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,600&family=IBM+Plex+Mono:wght@400;500&family=Barlow+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ink:#010d18;--gold:#c9a84c;--gold2:#e8c56a;
+  --white:#f2ede4;--muted:#6b87a8;
+  --red:#c8303a;--amber:#c97b06;--green:#0d7a4a;--terra:#b84a28;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);font-family:'Barlow Condensed',sans-serif;}
+canvas.bgc{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+
+.deck{position:relative;width:100%;height:100%;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;overflow:hidden;
+  transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1);
+  transform:translateX(70px) scale(0.98);}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0) scale(1);}
+.slide.exit{opacity:0;transform:translateX(-70px) scale(0.98);}
+.slide::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.05) 3px,rgba(0,0,0,.05) 4px);}
+
+/* BRACKETS */
+.bk{position:absolute;z-index:4;width:22px;height:22px;pointer-events:none;}
+.bk-tl{top:13px;left:13px;border-top:1px solid;border-left:1px solid;}
+.bk-tr{top:13px;right:13px;border-top:1px solid;border-right:1px solid;}
+.bk-bl{bottom:52px;left:13px;border-bottom:1px solid;border-left:1px solid;}
+.bk-br{bottom:52px;right:13px;border-bottom:1px solid;border-right:1px solid;}
+
+/* GHOST */
+.ghost{position:absolute;z-index:1;font-family:'Cormorant Garamond',serif;font-weight:700;
+  line-height:.85;color:transparent;pointer-events:none;user-select:none;
+  text-transform:uppercase;white-space:nowrap;}
+
+/* NAV */
+.progress-bar{position:absolute;bottom:0;left:0;height:2px;
+  background:linear-gradient(90deg,var(--terra),var(--gold));transition:width .6s ease;z-index:10;}
+.nav{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:12px;z-index:20;}
+.nav-btn{width:33px;height:33px;border-radius:50%;background:rgba(201,168,76,.08);
+  border:1px solid rgba(201,168,76,.25);color:var(--gold);cursor:pointer;font-size:13px;
+  display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s;user-select:none;}
+.nav-btn:hover{background:rgba(201,168,76,.2);transform:scale(1.1);}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(201,168,76,.22);cursor:pointer;transition:all .3s;}
+.dot.active{background:var(--gold);transform:scale(1.5);}
+.snum{position:absolute;bottom:20px;right:38px;z-index:20;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(201,168,76,.3);letter-spacing:.15em;}
+
+/* ── COVER ── */
+.cv-inner{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 68px;}
+.cv-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.28em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:16px;opacity:0;animation:fup .7s .2s forwards;}
+.cv-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6.5vw,90px);font-weight:600;
+  color:var(--white);line-height:.9;margin-bottom:20px;opacity:0;animation:fup .7s .35s forwards;}
+.cv-title em{color:var(--gold);font-style:italic;}
+.cv-title span{color:var(--terra);}
+.cv-rule{width:68px;height:1px;background:linear-gradient(90deg,var(--terra),var(--gold));
+  margin-bottom:18px;opacity:0;animation:expw .7s .5s forwards;}
+.cv-sub{font-size:14px;font-weight:300;color:var(--muted);line-height:1.7;max-width:560px;
+  margin-bottom:26px;opacity:0;animation:fup .7s .6s forwards;}
+.cv-pills{display:flex;gap:8px;flex-wrap:wrap;opacity:0;animation:fup .7s .8s forwards;}
+.pill{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.13em;
+  border:1px solid rgba(201,168,76,.3);color:var(--gold);padding:6px 14px;text-transform:uppercase;}
+.pill-r{border-color:rgba(200,48,58,.4);color:var(--red);}
+.cv-dg{position:absolute;top:0;right:0;width:38%;height:100%;z-index:1;
+  background:linear-gradient(135deg,transparent,rgba(184,74,40,.05));
+  clip-path:polygon(24% 0,100% 0,100% 100%,0% 100%);}
+.cv-dl{position:absolute;top:0;right:0;width:38%;height:100%;z-index:1;
+  border-left:1px solid rgba(184,74,40,.1);clip-path:polygon(24% 0,100% 0,100% 100%,0% 100%);}
+
+/* ── SCENARIO SLIDE ── */
+.sc-wrap{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;padding:32px 52px 28px;}
+.sc-topbar{display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:13px;border-bottom:1px solid rgba(201,168,76,.15);margin-bottom:22px;}
+.sc-brand{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;}
+.sc-date{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.1em;}
+
+/* scenario number badge */
+.sc-badge{display:flex;align-items:center;gap:16px;margin-bottom:18px;}
+.sc-num{font-family:'Cormorant Garamond',serif;font-size:clamp(60px,8vw,100px);font-weight:700;
+  line-height:1;color:transparent;-webkit-text-stroke:1px;}
+.sc-label-wrap{display:flex;flex-direction:column;gap:5px;}
+.sc-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.22em;
+  text-transform:uppercase;}
+.sc-name{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3vw,34px);font-weight:600;color:var(--white);line-height:1.05;}
+
+/* probability bar */
+.prob-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.prob-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;white-space:nowrap;}
+.prob-bar{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:2px;}
+.prob-fill{height:100%;border-radius:2px;transition:width 1s ease;}
+.prob-pct{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;}
+
+/* content grid */
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;}
+.sc-box{padding:16px 18px;display:flex;flex-direction:column;gap:8px;
+  background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);position:relative;overflow:hidden;}
+.sc-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.sb-title{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.18em;
+  text-transform:uppercase;margin-bottom:4px;}
+.sb-narrative{font-size:13px;font-weight:300;color:#8dadc8;line-height:1.7;}
+.sb-narrative strong{color:var(--white);}
+
+/* indicators list */
+.ind-list{display:flex;flex-direction:column;gap:6px;}
+.ind-item{display:flex;gap:10px;align-items:flex-start;}
+.ind-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+.ind-text{font-size:12.5px;font-weight:300;color:#7a9ab2;line-height:1.55;}
+.ind-text strong{color:var(--white);}
+
+/* sahel impact box */
+.sahel-box{grid-column:1/-1;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;
+  border:1px solid;position:relative;overflow:hidden;}
+.sahel-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.sahel-icon{font-size:18px;flex-shrink:0;padding-top:2px;}
+.sahel-label{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.18em;
+  text-transform:uppercase;margin-bottom:5px;}
+.sahel-text{font-size:13px;font-weight:300;line-height:1.65;}
+.sahel-text strong{color:var(--white);}
+
+/* COLORS PER SCENARIO */
+/* S1 — green/theatre */
+.s1-num{-webkit-text-stroke-color:rgba(13,122,74,.5);}
+.s1-label{color:var(--green);}
+.s1 .sc-box::before{background:linear-gradient(90deg,var(--green),transparent);}
+.s1 .sb-title{color:var(--green);}
+.s1 .ind-dot{background:var(--green);}
+.s1 .sahel-box{background:rgba(13,122,74,.05);border-color:rgba(13,122,74,.3);}
+.s1 .sahel-box::before{background:linear-gradient(90deg,var(--green),transparent);}
+.s1 .sahel-label{color:var(--green);}
+.s1 .sahel-text{color:#5ecba1;}
+.s1 .prob-fill{background:var(--green);}
+.s1 .prob-pct{color:var(--green);}
+.s1 .bk-tl,.s1 .bk-tr,.s1 .bk-bl,.s1 .bk-br{border-color:rgba(13,122,74,.4);}
+
+/* S2 — amber/power struggle */
+.s2-num{-webkit-text-stroke-color:rgba(201,124,6,.5);}
+.s2-label{color:var(--amber);}
+.s2 .sc-box::before{background:linear-gradient(90deg,var(--amber),transparent);}
+.s2 .sb-title{color:var(--amber);}
+.s2 .ind-dot{background:var(--amber);}
+.s2 .sahel-box{background:rgba(201,124,6,.05);border-color:rgba(201,124,6,.3);}
+.s2 .sahel-box::before{background:linear-gradient(90deg,var(--amber),transparent);}
+.s2 .sahel-label{color:var(--amber);}
+.s2 .sahel-text{color:#d4aa40;}
+.s2 .prob-fill{background:var(--amber);}
+.s2 .prob-pct{color:var(--amber);}
+.s2 .bk-tl,.s2 .bk-tr,.s2 .bk-bl,.s2 .bk-br{border-color:rgba(201,124,6,.4);}
+
+/* S3 — red/coup */
+.s3-num{-webkit-text-stroke-color:rgba(200,48,58,.5);}
+.s3-label{color:var(--red);}
+.s3 .sc-box::before{background:linear-gradient(90deg,var(--red),transparent);}
+.s3 .sb-title{color:var(--red);}
+.s3 .ind-dot{background:var(--red);}
+.s3 .sahel-box{background:rgba(200,48,58,.06);border-color:rgba(200,48,58,.3);}
+.s3 .sahel-box::before{background:linear-gradient(90deg,var(--red),transparent);}
+.s3 .sahel-label{color:var(--red);}
+.s3 .sahel-text{color:#c09090;}
+.s3 .prob-fill{background:var(--red);}
+.s3 .prob-pct{color:var(--red);}
+.s3 .bk-tl,.s3 .bk-tr,.s3 .bk-bl,.s3 .bk-br{border-color:rgba(200,48,58,.4);}
+
+/* ── CLOSING ── */
+.cl-inner{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:0 52px;position:relative;z-index:3;}
+.cl-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.28em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:16px;}
+.cl-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5.5vw,72px);font-weight:600;
+  color:var(--white);line-height:.92;margin-bottom:14px;}
+.cl-title em{color:var(--gold);font-style:italic;}
+.cl-rule{width:52px;height:1px;background:linear-gradient(90deg,var(--terra),var(--gold));margin:0 auto 16px;}
+.cl-body{font-size:13.5px;font-weight:300;color:var(--muted);line-height:1.7;max-width:420px;margin-bottom:24px;}
+.cl-cards{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:22px;}
+.cl-card{padding:10px 16px;border:1px solid rgba(201,168,76,.22);min-width:125px;}
+.cl-cl{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:3px;}
+.cl-cv{font-size:13px;color:var(--gold2);}
+.cl-ft{font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:rgba(107,135,168,.3);letter-spacing:.1em;line-height:1.8;}
+
+/* ANIMATIONS */
+@keyframes fup{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes expw{from{opacity:0;width:0;}to{opacity:1;width:68px;}}
+@keyframes sin{from{opacity:0;transform:translateY(11px);}to{opacity:1;transform:translateY(0);}}
+.slide.active .sc-badge{animation:sin .5s .05s both;}
+.slide.active .prob-row{animation:sin .5s .15s both;}
+.slide.active .sc-box:nth-child(1){animation:sin .45s .2s both;}
+.slide.active .sc-box:nth-child(2){animation:sin .45s .3s both;}
+.slide.active .sahel-box{animation:sin .45s .4s both;}
+
+@media(max-width:700px){
+  .cv-inner,.sc-wrap,.cl-inner{padding:20px 18px 24px;}
+  .sc-grid{grid-template-columns:1fr;}
+  .sahel-box{grid-column:1;}
+  .cl-cards{flex-direction:column;align-items:center;}
+}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+<div class="progress-bar" id="pb"></div>
+<div class="snum" id="sn">01 / 05</div>
+<div class="nav"><div class="nav-btn" id="prev">&#8592;</div><div class="nav-dots" id="nd"></div><div class="nav-btn" id="next">&#8594;</div></div>
+
+<!-- ═══ SLIDE 1: COVER ═══ -->
+<div class="slide active" id="s0">
+  <canvas class="bgc" id="c0"></canvas>
+  <div class="ghost" style="font-size:28vw;bottom:-5%;left:-2%;-webkit-text-stroke:1px rgba(201,168,76,.055);">SN</div>
+  <div class="cv-dg"></div><div class="cv-dl"></div>
+  <div class="bk bk-tl" style="border-color:rgba(201,168,76,.4);"></div>
+  <div class="bk bk-tr" style="border-color:rgba(201,168,76,.4);"></div>
+  <div class="bk bk-bl" style="border-color:rgba(201,168,76,.4);"></div>
+  <div class="bk bk-br" style="border-color:rgba(201,168,76,.4);"></div>
+  <div class="cv-inner">
+    <div class="cv-tag">SRM Grand Lakes &amp; Africa &middot; Scenario Intelligence Flash</div>
+    <div class="cv-title">Sénégal :<br><span>Three</span><br><em>Scenarios</em></div>
+    <div class="cv-rule"></div>
+    <div class="cv-sub">48 hours. Two institutions decapitated. One country at a crossroads — and a Sahel watching every move. What happens next in Dakar shapes the security architecture of West Africa.</div>
+    <div class="cv-pills">
+      <div class="pill">25 May 2026</div>
+      <div class="pill">SRM Flash Analysis</div>
+      <div class="pill pill-r">High Priority</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 2: SCENARIO 1 ═══ -->
+<div class="slide s1" id="s1">
+  <canvas class="bgc" id="c1"></canvas>
+  <div class="ghost" style="font-size:20vw;top:8%;right:-2%;-webkit-text-stroke:1px rgba(13,122,74,.06);">THÉÂTRE</div>
+  <div class="bk bk-tl"></div><div class="bk bk-tr"></div><div class="bk bk-bl"></div><div class="bk bk-br"></div>
+  <div class="sc-wrap">
+    <div class="sc-topbar">
+      <div class="sc-brand">SRM &middot; Scenario Analysis &middot; Sénégal 2026</div>
+      <div class="sc-date">25 May 2026</div>
+    </div>
+    <div class="sc-badge">
+      <div class="sc-num s1-num">01</div>
+      <div class="sc-label-wrap">
+        <div class="sc-label s1-label">Orchestrated Rupture</div>
+        <div class="sc-name">"The Theatre of Conflict"</div>
+      </div>
+    </div>
+    <div class="prob-row">
+      <div class="prob-label">Probability</div>
+      <div class="prob-bar"><div class="prob-fill" style="width:35%;background:var(--green);"></div></div>
+      <div class="prob-pct s1">35%</div>
+    </div>
+    <div class="sc-grid">
+      <div class="sc-box">
+        <div class="sb-title">Narrative</div>
+        <div class="sb-narrative">The Faye–Sonko split is <strong>performative theatre.</strong> Both actors coordinated behind closed doors — a planned institutional separation designed to allow Faye to pivot toward France and the IMF while Sonko manages the street base. The conflict is the cover story.</div>
+      </div>
+      <div class="sc-box">
+        <div class="sb-title">Key Indicators — Watch For</div>
+        <div class="ind-list">
+          <div class="ind-item"><div class="ind-dot"></div><div class="ind-text"><strong>No major street violence</strong> — protests stay symbolic, no sustained mobilization</div></div>
+          <div class="ind-item"><div class="ind-dot"></div><div class="ind-text"><strong>PASTEF party discipline holds</strong> — no public fracture, no rival factions</div></div>
+          <div class="ind-item"><div class="ind-dot"></div><div class="ind-text"><strong>IMF talks accelerate</strong> within 3–4 weeks — debt deal moves quietly forward</div></div>
+          <div class="ind-item"><div class="ind-dot"></div><div class="ind-text"><strong>Sonko accepts "new role"</strong> publicly, no hostile moves against Faye</div></div>
+        </div>
+      </div>
+      <div class="sahel-box">
+        <div class="sahel-icon">🟢</div>
+        <div>
+          <div class="sahel-label">Sahel Impact</div>
+          <div class="sahel-text">Low immediate risk. Senegal stabilizes internally, maintains ECOWAS alignment. <strong>Regional terrorism unaffected.</strong> AES countries remain cautious but no catalyst for escalation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 3: SCENARIO 2 ═══ -->
+<div class="slide s2" id="s2">
+  <canvas class="bgc" id="c2"></canvas>
+  <div class="ghost" style="font-size:16vw;top:8%;right:-2%;-webkit-text-stroke:1px rgba(201,124,6,.06);">POUVOIR</div>
+  <div class="bk bk-tl"></div><div class="bk bk-tr"></div><div class="bk bk-bl"></div><div class="bk bk-br"></div>
+  <div class="sc-wrap">
+    <div class="sc-topbar">
+      <div class="sc-brand">SRM &middot; Scenario Analysis &middot; Sénégal 2026</div>
+      <div class="sc-date">25 May 2026</div>
+    </div>
+    <div class="sc-badge">
+      <div class="sc-num s2-num">02</div>
+      <div class="sc-label-wrap">
+        <div class="sc-label s2-label">Genuine Power Struggle</div>
+        <div class="sc-name">"Sonko Pivots to the Assembly"</div>
+      </div>
+    </div>
+    <div class="prob-row">
+      <div class="prob-label">Probability</div>
+      <div class="prob-bar"><div class="prob-fill" style="width:50%;background:var(--amber);"></div></div>
+      <div class="prob-pct" style="color:var(--amber);">50%</div>
+    </div>
+    <div class="sc-grid">
+      <div class="sc-box">
+        <div class="sb-title">Narrative</div>
+        <div class="sb-narrative">The rupture is <strong>real.</strong> Ndiaye's resignation opens the Assembly speaker seat. Sonko — fired but free, still party leader with a massive youth base — pivots to become National Assembly president. <strong>Two power centers form.</strong> Faye controls the presidency; Sonko controls the legislature.</div>
+      </div>
+      <div class="sc-box">
+        <div class="sb-title">Key Indicators — Watch For</div>
+        <div class="ind-list">
+          <div class="ind-item"><div class="ind-dot"></div><div class="ind-text"><strong>Speaker election called</strong> — National Assembly announces timeline (Week 1)</div></div>
+          <div class="ind-item"><div class="ind-dot"></div><div class="ind-text"><strong>Sonko declares candidacy</strong> — PASTEF mobilizes behind him (Week 2)</div></div>
+          <div class="ind-item"><div class="ind-dot"></div><div class="ind-text"><strong>Faye blocks or delays</strong> the election — constitutional crisis threshold (Week 3)</div></div>
+          <div class="ind-item"><div class="ind-dot"></div><div class="ind-text"><strong>Street mobilization</strong> — youth protests, Sonko rallies, legislative paralysis</div></div>
+        </div>
+      </div>
+      <div class="sahel-box">
+        <div class="sahel-icon">🟡</div>
+        <div>
+          <div class="sahel-label">Sahel Impact</div>
+          <div class="sahel-text">High regional destabilization. Senegal's internal conflict signals weakness. AES countries harden against ECOWAS. <strong>JNIM increases pressure on Senegal's eastern borders.</strong> Coastal arc (Dakar–Abidjan–Cotonou) perceived as fractured.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 4: SCENARIO 3 ═══ -->
+<div class="slide s3" id="s3">
+  <canvas class="bgc" id="c3"></canvas>
+  <div class="ghost" style="font-size:16vw;top:8%;right:-2%;-webkit-text-stroke:1px rgba(200,48,58,.07);">COUP</div>
+  <div class="bk bk-tl"></div><div class="bk bk-tr"></div><div class="bk bk-bl"></div><div class="bk bk-br"></div>
+  <div class="sc-wrap">
+    <div class="sc-topbar">
+      <div class="sc-brand" style="color:var(--red);">SRM &middot; Scenario Analysis &middot; Sénégal 2026</div>
+      <div class="sc-date">25 May 2026</div>
+    </div>
+    <div class="sc-badge">
+      <div class="sc-num s3-num">03</div>
+      <div class="sc-label-wrap">
+        <div class="sc-label s3-label">Military Intervention</div>
+        <div class="sc-name">"Constitutional Coup"</div>
+      </div>
+    </div>
+    <div class="prob-row">
+      <div class="prob-label">Probability</div>
+      <div class="prob-bar"><div class="prob-fill" style="width:25%;background:var(--red);"></div></div>
+      <div class="prob-pct" style="color:var(--red);">25%</div>
+    </div>
+    <div class="sc-grid">
+      <div class="sc-box">
+        <div class="sb-title">Narrative</div>
+        <div class="sb-narrative">If Faye and Sonko lock into open war (Scenario 2 escalates), the military — <strong>French-trained, Western-aligned</strong> — uses constitutional crisis as pretext to seize power. Senegal joins Mali, Burkina, Niger in the <strong>military junta belt.</strong> ECOWAS loses its last civilian democracy anchor in the Sahel.</div>
+      </div>
+      <div class="sc-box">
+        <div class="sb-title">Key Indicators — Watch For</div>
+        <div class="ind-list">
+          <div class="ind-item"><div class="ind-dot"></div><div class="ind-text"><strong>Constitutional deadlock</strong> — speaker election paralyzed 4+ weeks, courts split</div></div>
+          <div class="ind-item"><div class="ind-dot"></div><div class="ind-text"><strong>Military public statement</strong> — Chief of Staff signals "institutional stability" concern</div></div>
+          <div class="ind-item"><div class="ind-dot"></div><div class="ind-text"><strong>Unexplained troop movements</strong> around Dakar — presidential palace, RTS, key ministries</div></div>
+          <div class="ind-item"><div class="ind-dot"></div><div class="ind-text"><strong>Coup execution</strong> — assembly and presidency suspended; transition council installed</div></div>
+        </div>
+      </div>
+      <div class="sahel-box">
+        <div class="sahel-icon">🔴</div>
+        <div>
+          <div class="sahel-label">Sahel Impact — CATASTROPHIC</div>
+          <div class="sahel-text">Loss of last civilian ECOWAS anchor. AES interprets as Western-coordinated destabilization. <strong>JNIM accelerates attacks across coastal belt.</strong> Spillover into Guinea-Bissau, Guinea, Sierra Leone. Full AES–ECOWAS rupture triggered.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 5: CLOSING ═══ -->
+<div class="slide" id="s4">
+  <canvas class="bgc" id="c4"></canvas>
+  <div class="ghost" style="font-size:22vw;top:6%;left:50%;transform:translateX(-50%);-webkit-text-stroke:1px rgba(201,168,76,.05);">SRM</div>
+  <div class="bk bk-tl" style="border-color:rgba(201,168,76,.4);"></div>
+  <div class="bk bk-tr" style="border-color:rgba(201,168,76,.4);"></div>
+  <div class="bk bk-bl" style="border-color:rgba(201,168,76,.4);"></div>
+  <div class="bk bk-br" style="border-color:rgba(201,168,76,.4);"></div>
+  <div class="sc-topbar" style="position:relative;z-index:3;padding:22px 52px 0;border-bottom:1px solid rgba(201,168,76,.12);">
+    <div class="sc-brand">SRM Grand Lakes &amp; Africa</div>
+    <div class="sc-date">Flash Analysis Complete &middot; 25 May 2026</div>
+  </div>
+  <div class="cl-inner">
+    <div class="cl-tag">Security Risk Monitoring Network</div>
+    <div class="cl-title">Watch the<br><em>Indicators.</em></div>
+    <div class="cl-rule"></div>
+    <div class="cl-body">The next 30 days in Senegal will determine which scenario unfolds — and with it, the security architecture of the entire West African Sahel. Follow SRM for daily intelligence updates.</div>
+    <div class="cl-cards">
+      <div class="cl-card"><div class="cl-cl">Website</div><div class="cl-cv">srmgrandlakes.org</div></div>
+      <div class="cl-card"><div class="cl-cl">Contact</div><div class="cl-cv">info@srmgrandlakes.org</div></div>
+      <div class="cl-card"><div class="cl-cl">Phone</div><div class="cl-cv">+1 202 439 1448</div></div>
+    </div>
+    <div class="cl-ft">OSINT only &middot; Situational awareness &middot; Not operational security advice &middot; Washington DC</div>
+  </div>
+</div>
+
+</div>
+<script>
+function PN(cv,o){
+  const O=Object.assign({n:50,sp:.22,ll:130,col:'rgba(201,168,76,'},o);
+  const x=cv.getContext('2d');let W,H,pts=[],raf;
+  function rsz(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  function mk(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*O.sp,vy:(Math.random()-.5)*O.sp,r:1.4+Math.random()*.7};}
+  function init(){rsz();pts=[];for(let i=0;i<O.n;i++)pts.push(mk());}
+  function draw(){
+    x.clearRect(0,0,W,H);
+    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;
+      if(p.x<-20)p.x=W+20;if(p.x>W+20)p.x=-20;
+      if(p.y<-20)p.y=H+20;if(p.y>H+20)p.y=-20;
+      x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fillStyle=O.col+'0.45)';x.fill();});
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<O.ll){x.beginPath();x.moveTo(pts[i].x,pts[i].y);x.lineTo(pts[j].x,pts[j].y);
+        x.strokeStyle=O.col+(1-d/O.ll)*.22+')';x.lineWidth=.5;x.stroke();}}
+    raf=requestAnimationFrame(draw);}
+  function start(){init();draw();}
+  window.addEventListener('resize',()=>{rsz();pts=[];for(let i=0;i<O.n;i++)pts.push(mk());});
+  return{start};}
+function HexBg(cv,col='201,168,76'){
+  const x=cv.getContext('2d');let W,H;
+  function rsz(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  function draw(){x.clearRect(0,0,W,H);const s=42,w=s*2,h=Math.sqrt(3)*s;
+    for(let r=-1;r<H/h+2;r++)for(let c=-1;c<W/w+2;c++){
+      const ox=(r%2===0)?0:w*.75,cx=c*w*1.5+ox,cy=r*h+(r%2===0?0:h*.5);
+      x.beginPath();for(let i=0;i<6;i++){const a=Math.PI/180*(60*i-30);
+        i===0?x.moveTo(cx+s*Math.cos(a),cy+s*Math.sin(a)):x.lineTo(cx+s*Math.cos(a),cy+s*Math.sin(a));}
+      x.closePath();x.strokeStyle=`rgba(${col},.05)`;x.lineWidth=.5;x.stroke();}}
+  rsz();draw();window.addEventListener('resize',()=>{rsz();draw();});}
+function Ripple(cv,col='13,122,74'){
+  const x=cv.getContext('2d');let W,H,raf;
+  function rsz(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  function draw(){x.clearRect(0,0,W,H);const t=Date.now()/1000;
+    const cx=W*.5,cy=H*.5;
+    for(let i=0;i<5;i++){const ph=((t*.18+i/5)%1),r=ph*Math.max(W,H)*.8,a=(1-ph)*.07;
+      x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.strokeStyle=`rgba(${col},${a})`;x.lineWidth=.8;x.stroke();}
+    raf=requestAnimationFrame(draw);}
+  rsz();draw();window.addEventListener('resize',rsz);}
+function Star(cv){
+  const x=cv.getContext('2d');let W,H,raf;
+  function rsz(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  function draw(){x.clearRect(0,0,W,H);const t=Date.now()/9000,cx=W*.5,cy=H*.55;
+    for(let i=0;i<36;i++){const a=(i/36)*Math.PI*2+t,l=H*.6+Math.sin(t*3+i)*(H*.04);
+      x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(a)*l,cy+Math.sin(a)*l);
+      x.strokeStyle='rgba(201,168,76,.038)';x.lineWidth=.5;x.stroke();}
+    raf=requestAnimationFrame(draw);}
+  rsz();draw();window.addEventListener('resize',rsz);}
+window.addEventListener('load',()=>{
+  PN(document.getElementById('c0'),{n:58,col:'rgba(184,74,40,'}).start();
+  HexBg(document.getElementById('c1'),'13,122,74');
+  Ripple(document.getElementById('c2'),'201,124,6');
+  Ripple(document.getElementById('c3'),'200,48,58');
+  Star(document.getElementById('c4'));
+});
+const slides=document.querySelectorAll('.slide'),total=slides.length;let cur=0;
+function goTo(n){if(n<0||n>=total)return;
+  slides[cur].classList.remove('active');slides[cur].classList.add('exit');
+  setTimeout(()=>slides[cur].classList.remove('exit'),700);
+  cur=n;slides[cur].classList.add('active');upd();}
+function upd(){
+  document.getElementById('pb').style.width=((cur+1)/total*100)+'%';
+  document.getElementById('sn').textContent=String(cur+1).padStart(2,'0')+' / '+String(total).padStart(2,'0');
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));}
+function buildDots(){const c=document.getElementById('nd');
+  for(let i=0;i<total;i++){const d=document.createElement('div');
+    d.className='dot'+(i===0?' active':'');d.addEventListener('click',()=>goTo(i));c.appendChild(d);}}
+document.getElementById('prev').addEventListener('click',()=>goTo(cur-1));
+document.getElementById('next').addEventListener('click',()=>goTo(cur+1));
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')goTo(cur+1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')goTo(cur-1);});
+let ts=0,tx=0;
+document.addEventListener('touchstart',e=>{ts=e.touches[0].clientY;tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ts;
+  if(Math.abs(dx)>Math.abs(dy)){if(dx<-50)goTo(cur+1);else if(dx>50)goTo(cur-1);}},{passive:true});
+buildDots();upd();
+</script>
+</body>
+</html>
