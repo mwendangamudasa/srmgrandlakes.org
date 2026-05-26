@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SRM | Ebola DRC 2026 — Security Risk Matrix</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  width:100%;min-height:100%;
+  background:#060f1c;
+  font-family:Georgia,'Times New Roman',serif;
+  color:#f5f0e8;
+}
+
+.page{
+  max-width:960px;
+  margin:0 auto;
+  padding:40px 40px 48px;
+}
+
+/* ── HEADER ── */
+.header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding-bottom:16px;
+  border-bottom:2px solid #c8303a;
+  margin-bottom:24px;
+  flex-wrap:wrap;gap:12px;
+}
+.hdr-left{}
+.hdr-tag{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;
+  letter-spacing:.26em;color:#c9a84c;text-transform:uppercase;margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+.hdr-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:#c8303a;animation:blnk 1.2s infinite;flex-shrink:0;}
+@keyframes blnk{0%,100%{opacity:1;}50%{opacity:.15;}}
+.hdr-title{
+  font-family:Georgia,serif;font-size:28px;font-weight:700;
+  color:#f5f0e8;line-height:1.1;letter-spacing:-.01em;
+}
+.hdr-title .red{color:#c8303a;}
+.hdr-title .gold{color:#c9a84c;font-style:italic;}
+.hdr-right{text-align:right;}
+.hdr-meta{font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8aa0bc;letter-spacing:.1em;line-height:1.9;}
+.pheic-badge{
+  display:inline-block;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.16em;
+  background:#c8303a;color:#fff;padding:4px 12px;text-transform:uppercase;margin-top:6px;
+}
+
+/* ── STATS ROW ── */
+.stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+  margin-bottom:20px;
+}
+.stat{padding:12px 14px;border:1px solid;}
+.s-r{background:rgba(200,48,58,.08);border-color:rgba(200,48,58,.32);}
+.s-a{background:rgba(225,125,10,.07);border-color:rgba(225,125,10,.28);}
+.s-g{background:rgba(201,168,76,.06);border-color:rgba(201,168,76,.24);}
+.stat-n{font-family:Georgia,serif;font-size:26px;font-weight:700;line-height:1;}
+.sn-r{color:#c8303a;}.sn-a{color:#e17d0a;}.sn-g{color:#c9a84c;}
+.stat-l{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.12em;color:#8aa0bc;text-transform:uppercase;margin-top:3px;}
+
+/* ── CONTEXT ── */
+.context-block{
+  background:rgba(15,30,48,.8);
+  border:1px solid rgba(255,255,255,.08);
+  border-left:3px solid #c8303a;
+  padding:16px 20px;
+  margin-bottom:20px;
+}
+.ctx-label{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;
+  letter-spacing:.22em;color:#c8303a;text-transform:uppercase;margin-bottom:10px;
+}
+.ctx-text{
+  font-family:Georgia,serif;font-size:13.5px;
+  color:#dde4ee;line-height:1.78;
+}
+.ctx-text strong{color:#f5f0e8;font-weight:700;}
+.ctx-text .warn{color:#f4a460;}
+.ctx-text .hi{color:#e8c56a;}
+
+/* ── MATRIX SECTION ── */
+.matrix-section{margin-bottom:20px;}
+.section-label{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;
+  letter-spacing:.22em;color:#c9a84c;text-transform:uppercase;
+  margin-bottom:10px;display:flex;align-items:center;gap:12px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(201,168,76,.2);}
+
+.axis-top{
+  font-family:Georgia,serif;font-size:12px;font-weight:700;
+  text-align:center;color:#f5f0e8;margin-bottom:8px;
+  letter-spacing:.03em;
+}
+.axis-top span{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8aa0bc;font-weight:400;margin-left:6px;}
+
+.matrix-layout{display:flex;gap:8px;}
+.y-label{
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  display:flex;align-items:center;justify-content:center;
+  font-family:Georgia,serif;font-size:12px;font-weight:700;
+  color:#f5f0e8;min-width:16px;letter-spacing:.03em;
+}
+.y-label span{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8aa0bc;font-weight:400;}
+
+.matrix-grid{flex:1;}
+
+/* header row */
+.mx-hdr{display:grid;grid-template-columns:110px repeat(5,1fr);gap:2px;margin-bottom:2px;}
+.mx-hc{
+  padding:8px 4px;text-align:center;
+  background:#152438;border:1px solid rgba(255,255,255,.1);
+}
+.mx-hc.corner{background:transparent;border:none;}
+.hc-main{font-family:Georgia,serif;font-size:12px;font-weight:700;color:#f5f0e8;display:block;}
+.hc-num{font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8aa0bc;display:block;margin-top:2px;}
+
+/* data rows */
+.mx-row{display:grid;grid-template-columns:110px repeat(5,1fr);gap:2px;margin-bottom:2px;}
+.prob-cell{
+  background:#0f1e30;border:1px solid rgba(255,255,255,.09);
+  padding:6px 10px;display:flex;flex-direction:column;justify-content:center;
+}
+.pc-name{font-family:Georgia,serif;font-size:12px;font-weight:700;color:#f5f0e8;}
+.pc-num{font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8aa0bc;margin-top:2px;}
+
+.mx-cell{
+  padding:5px 3px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;border:1px solid;
+  cursor:default;position:relative;min-height:54px;
+  transition:filter .15s;
+}
+.mx-cell:hover{filter:brightness(1.3);}
+
+.c-vlow{background:rgba(21,138,62,.18);border-color:rgba(21,138,62,.4);}
+.c-low{background:rgba(34,168,85,.16);border-color:rgba(34,168,85,.38);}
+.c-med{background:rgba(201,165,2,.16);border-color:rgba(201,165,2,.38);}
+.c-high{background:rgba(212,98,10,.2);border-color:rgba(212,98,10,.42);}
+.c-vhigh{background:rgba(200,48,58,.2);border-color:rgba(200,48,58,.42);}
+.c-extreme{background:rgba(139,0,0,.38);border-color:rgba(139,0,0,.68);}
+
+.ct{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;display:block;margin-bottom:2px;}
+.cs{font-family:Georgia,serif;font-size:20px;font-weight:700;line-height:1;display:block;}
+.cr{position:absolute;bottom:2px;right:4px;font-family:'IBM Plex Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);letter-spacing:.05em;}
+
+.c-vlow .ct,.c-vlow .cs{color:#4ade80;}
+.c-low .ct,.c-low .cs{color:#86efac;}
+.c-med .ct,.c-med .cs{color:#fde047;}
+.c-high .ct,.c-high .cs{color:#fb923c;}
+.c-vhigh .ct,.c-vhigh .cs{color:#fca5a5;}
+.c-extreme .ct,.c-extreme .cs{color:#fecaca;}
+
+/* ── RISK REGISTER ── */
+.risk-register{margin-bottom:20px;}
+.rr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.rr-card{
+  padding:10px 13px;
+  border:1px solid rgba(255,255,255,.07);
+  border-left:3px solid;
+  background:rgba(15,30,48,.6);
+}
+.rr-ext{border-left-color:#8b0000;}
+.rr-vhi{border-left-color:#c8303a;}
+.rr-hi{border-left-color:#e17d0a;}
+.rr-med{border-left-color:#c9a502;}
+.rr-low{border-left-color:#22a855;}
+.rr-id{font-family:'IBM Plex Mono',monospace;font-size:8px;color:#8aa0bc;letter-spacing:.1em;margin-bottom:5px;}
+.rr-name{font-family:Georgia,serif;font-size:13px;font-weight:700;color:#f5f0e8;line-height:1.3;margin-bottom:3px;}
+.rr-score{font-family:'IBM Plex Mono',monospace;font-size:8px;color:#8aa0bc;}
+
+/* ── LEGEND ── */
+.legend{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:20px;}
+.legend-label{font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:#8aa0bc;text-transform:uppercase;letter-spacing:.1em;padding-top:2px;}
+.leg-item{font-family:'IBM Plex Mono',monospace;font-size:8.5px;padding:3px 10px;border:1px solid;}
+.li-vl{background:rgba(21,138,62,.18);border-color:rgba(21,138,62,.4);color:#4ade80;}
+.li-l{background:rgba(34,168,85,.16);border-color:rgba(34,168,85,.38);color:#86efac;}
+.li-m{background:rgba(201,165,2,.16);border-color:rgba(201,165,2,.38);color:#fde047;}
+.li-h{background:rgba(212,98,10,.2);border-color:rgba(212,98,10,.42);color:#fb923c;}
+.li-v{background:rgba(200,48,58,.2);border-color:rgba(200,48,58,.42);color:#fca5a5;}
+.li-e{background:rgba(139,0,0,.38);border-color:rgba(139,0,0,.68);color:#fecaca;}
+
+/* ── PSB BOX ── */
+.psb-box{
+  background:rgba(201,168,76,.05);
+  border:1px solid rgba(201,168,76,.25);
+  border-left:3px solid #c9a84c;
+  padding:13px 18px;
+  display:flex;gap:14px;align-items:flex-start;
+  margin-bottom:20px;
+}
+.psb-tag{font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.16em;color:#c9a84c;text-transform:uppercase;white-space:nowrap;padding-top:2px;}
+.psb-text{font-family:Georgia,serif;font-size:13.5px;color:#dde4ee;line-height:1.72;}
+.psb-text strong{color:#f5f0e8;}
+
+/* ── FOOTER ── */
+.footer{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding-top:16px;border-top:1px solid rgba(201,168,76,.2);
+  flex-wrap:wrap;gap:12px;
+}
+.ft-left{}
+.ft-brand{font-family:Georgia,serif;font-size:15px;font-weight:700;color:#c9a84c;margin-bottom:4px;}
+.ft-contact{font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8aa0bc;letter-spacing:.1em;line-height:1.8;}
+.ft-right{text-align:right;}
+.ft-source{font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:rgba(138,160,188,.4);letter-spacing:.09em;line-height:1.8;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="hdr-left">
+      <div class="hdr-tag">SRM Grand Lakes &amp; Africa &nbsp;&middot;&nbsp; Security Risk Assessment</div>
+      <div class="hdr-title">
+        Ebola <span class="red">DRC</span> <span class="gold">2026</span><br>
+        Security Risk Matrix
+      </div>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-meta">
+        Issued: 25 May 2026<br>
+        Region: Ituri &middot; North Kivu &middot; South Kivu &middot; Uganda<br>
+        Strain: Bundibugyo &middot; No Vaccine &middot; No Treatment
+      </div>
+      <div class="pheic-badge">&#9632; PHEIC Declared &nbsp;&middot;&nbsp; 17 May 2026</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat s-r"><div class="stat-n sn-r">346</div><div class="stat-l">Suspected Cases · DRC &amp; Uganda</div></div>
+    <div class="stat s-r"><div class="stat-n sn-r">88+</div><div class="stat-l">Confirmed Deaths</div></div>
+    <div class="stat s-a"><div class="stat-n sn-a">17th</div><div class="stat-l">Ebola Outbreak in DRC Since 1976</div></div>
+    <div class="stat s-g"><div class="stat-n sn-g" style="font-size:18px;margin-top:3px;">PHEIC</div><div class="stat-l">WHO Classification</div></div>
+  </div>
+
+  <!-- CONTEXT -->
+  <div class="context-block">
+    <div class="ctx-label">Context Overview &nbsp;&middot;&nbsp; Eastern DRC</div>
+    <div class="ctx-text">
+      The 2026 Ebola outbreak (Bundibugyo strain — <span class="warn">no approved vaccine, no specific treatment</span>) has erupted in eastern DRC's Ituri Province, a region under <strong>effective rebel and armed group control where the Kinshasa government holds no operational presence.</strong> State absence dismantles every layer of containment: surveillance, contact tracing, isolation, and community trust cannot function without recognized authority. Armed groups restrict response teams while exploiting displacement and fear to expand territorial control, as <span class="hi">criminal networks traffic PPE and manipulate quarantine lists.</span> <strong>Border closures with Uganda, South Sudan, Rwanda, and Burundi</strong> — while medically necessary — compress already-fragile livelihoods into acute crisis, triggering displacement that paradoxically accelerates viral spread. <span class="warn">NGOs, critically weakened by USAID dismantlement and cascading global funding cuts,</span> face both financial paralysis and physical access denial. Eastern DRC confronts this outbreak more fragile and less prepared than the 2018–2020 outbreak that killed over 2,000 people.
+    </div>
+  </div>
+
+  <!-- MATRIX -->
+  <div class="matrix-section">
+    <div class="section-label">5 × 5 Security Risk Matrix</div>
+    <div class="axis-top">IMPACT <span>— How severe would the outcomes be if the risk occurred? →</span></div>
+    <div class="matrix-layout">
+      <div class="y-label">PROBABILITY <span>↑</span></div>
+      <div class="matrix-grid">
+
+        <!-- HEADER -->
+        <div class="mx-hdr">
+          <div class="mx-hc corner"></div>
+          <div class="mx-hc"><span class="hc-main">Insignificant</span><span class="hc-num">1</span></div>
+          <div class="mx-hc"><span class="hc-main">Minor</span><span class="hc-num">2</span></div>
+          <div class="mx-hc"><span class="hc-main">Significant</span><span class="hc-num">3</span></div>
+          <div class="mx-hc"><span class="hc-main">Major</span><span class="hc-num">4</span></div>
+          <div class="mx-hc"><span class="hc-main">Severe</span><span class="hc-num">5</span></div>
+        </div>
+
+        <!-- ROW 5 -->
+        <div class="mx-row">
+          <div class="prob-cell"><span class="pc-name">5 Almost Certain</span><span class="pc-num">P = 5</span></div>
+          <div class="mx-cell c-med"><span class="ct">Medium</span><span class="cs">5</span><span class="cr">R8</span></div>
+          <div class="mx-cell c-high"><span class="ct">High</span><span class="cs">10</span><span class="cr">R6</span></div>
+          <div class="mx-cell c-vhigh"><span class="ct">Very High</span><span class="cs">15</span><span class="cr">R3</span></div>
+          <div class="mx-cell c-extreme"><span class="ct">Extreme</span><span class="cs">20</span><span class="cr">R1</span></div>
+          <div class="mx-cell c-extreme"><span class="ct">Extreme</span><span class="cs">25</span></div>
+        </div>
+
+        <!-- ROW 4 -->
+        <div class="mx-row">
+          <div class="prob-cell"><span class="pc-name">4 Likely</span><span class="pc-num">P = 4</span></div>
+          <div class="mx-cell c-med"><span class="ct">Medium</span><span class="cs">4</span></div>
+          <div class="mx-cell c-med"><span class="ct">Medium</span><span class="cs">8</span><span class="cr">R7</span></div>
+          <div class="mx-cell c-high"><span class="ct">High</span><span class="cs">12</span><span class="cr">R2</span></div>
+          <div class="mx-cell c-vhigh"><span class="ct">Very High</span><span class="cs">16</span><span class="cr">R4</span></div>
+          <div class="mx-cell c-extreme"><span class="ct">Extreme</span><span class="cs">20</span><span class="cr">R5</span></div>
+        </div>
+
+        <!-- ROW 3 -->
+        <div class="mx-row">
+          <div class="prob-cell"><span class="pc-name">3 Moderate</span><span class="pc-num">P = 3</span></div>
+          <div class="mx-cell c-low"><span class="ct">Low</span><span class="cs">3</span></div>
+          <div class="mx-cell c-med"><span class="ct">Medium</span><span class="cs">6</span></div>
+          <div class="mx-cell c-med"><span class="ct">Medium</span><span class="cs">9</span><span class="cr">R9</span></div>
+          <div class="mx-cell c-high"><span class="ct">High</span><span class="cs">12</span></div>
+          <div class="mx-cell c-vhigh"><span class="ct">Very High</span><span class="cs">15</span><span class="cr">R10</span></div>
+        </div>
+
+        <!-- ROW 2 -->
+        <div class="mx-row">
+          <div class="prob-cell"><span class="pc-name">2 Unlikely</span><span class="pc-num">P = 2</span></div>
+          <div class="mx-cell c-vlow"><span class="ct">Very Low</span><span class="cs">2</span></div>
+          <div class="mx-cell c-low"><span class="ct">Low</span><span class="cs">4</span></div>
+          <div class="mx-cell c-med"><span class="ct">Medium</span><span class="cs">6</span></div>
+          <div class="mx-cell c-med"><span class="ct">Medium</span><span class="cs">8</span></div>
+          <div class="mx-cell c-high"><span class="ct">High</span><span class="cs">10</span></div>
+        </div>
+
+        <!-- ROW 1 -->
+        <div class="mx-row">
+          <div class="prob-cell"><span class="pc-name">1 Rare</span><span class="pc-num">P = 1</span></div>
+          <div class="mx-cell c-vlow"><span class="ct">Very Low</span><span class="cs">1</span></div>
+          <div class="mx-cell c-vlow"><span class="ct">Very Low</span><span class="cs">2</span></div>
+          <div class="mx-cell c-low"><span class="ct">Low</span><span class="cs">3</span></div>
+          <div class="mx-cell c-med"><span class="ct">Medium</span><span class="cs">4</span></div>
+          <div class="mx-cell c-med"><span class="ct">Medium</span><span class="cs">5</span></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <span class="legend-label">Risk Level:</span>
+    <span class="leg-item li-vl">Very Low</span>
+    <span class="leg-item li-l">Low</span>
+    <span class="leg-item li-m">Medium</span>
+    <span class="leg-item li-h">High</span>
+    <span class="leg-item li-v">Very High</span>
+    <span class="leg-item li-e">Extreme</span>
+  </div>
+
+  <!-- RISK REGISTER -->
+  <div class="risk-register">
+    <div class="section-label">Risk Register — Identified Security Risks</div>
+    <div class="rr-grid">
+      <div class="rr-card rr-ext">
+        <div class="rr-id">R1 &nbsp;&middot;&nbsp; Score 20 &nbsp;&middot;&nbsp; EXTREME</div>
+        <div class="rr-name">Virus Extension to Non-Affected Regions</div>
+        <div class="rr-score">Prob 5 (Almost Certain) × Impact 4 (Major)</div>
+      </div>
+      <div class="rr-card rr-ext">
+        <div class="rr-id">R5 &nbsp;&middot;&nbsp; Score 20 &nbsp;&middot;&nbsp; EXTREME</div>
+        <div class="rr-name">NGO Response Collapse — USAID Funding Gap</div>
+        <div class="rr-score">Prob 4 (Likely) × Impact 5 (Severe)</div>
+      </div>
+      <div class="rr-card rr-vhi">
+        <div class="rr-id">R4 &nbsp;&middot;&nbsp; Score 16 &nbsp;&middot;&nbsp; VERY HIGH</div>
+        <div class="rr-name">Border Closures Driving Secondary Displacement</div>
+        <div class="rr-score">Prob 4 (Likely) × Impact 4 (Major)</div>
+      </div>
+      <div class="rr-card rr-vhi">
+        <div class="rr-id">R3 &nbsp;&middot;&nbsp; Score 15 &nbsp;&middot;&nbsp; VERY HIGH</div>
+        <div class="rr-name">DRC State Absence Enabling Uncontrolled Spread</div>
+        <div class="rr-score">Prob 5 (Almost Certain) × Impact 3 (Significant)</div>
+      </div>
+      <div class="rr-card rr-hi">
+        <div class="rr-id">R2 &nbsp;&middot;&nbsp; Score 12 &nbsp;&middot;&nbsp; HIGH</div>
+        <div class="rr-name">Armed Groups Blocking Humanitarian Response</div>
+        <div class="rr-score">Prob 4 (Likely) × Impact 3 (Significant)</div>
+      </div>
+      <div class="rr-card rr-med">
+        <div class="rr-id">R6–R10 &nbsp;&middot;&nbsp; Score 8–15 &nbsp;&middot;&nbsp; MED – HIGH</div>
+        <div class="rr-name">Criminal Exploitation · Health Worker Attacks · Uganda Spread</div>
+        <div class="rr-score">Prob 4–5 × Impact 2–3 · Monitoring Required</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PSB -->
+  <div class="psb-box">
+    <div class="psb-tag">PSB<br>Engagement</div>
+    <div class="psb-text">
+      <strong>Peace and Security Bridges</strong> is actively accompanying humanitarian partners in the field, facilitating access negotiations with armed actors, and maintaining urgent calls for emergency financial mobilization from bilateral and multilateral donors — bridging the critical gap where no other coordination mechanism currently exists.
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="ft-left">
+      <div class="ft-brand">SRM Grand Lakes &amp; Africa</div>
+      <div class="ft-contact">
+        srmgrandlakes.org &nbsp;&middot;&nbsp; info@srmgrandlakes.org &nbsp;&middot;&nbsp; +1 202 439 1448
+      </div>
+    </div>
+    <div class="ft-right">
+      <div class="ft-source">
+        Sources: WHO · CDC · IRC · Direct Relief · UN News · OSINT<br>
+        For situational awareness only · Not operational security advice<br>
+        Washington DC · 25 May 2026
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
