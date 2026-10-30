@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SRM Briefings — Grand Lakes & Africa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Rajdhani:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy: #0A1628;
+      --navy-mid: #0D1F3C;
+      --red: #C0392B;
+      --gold: #B8860B;
+      --white: #F4F6F9;
+      --white-dim: rgba(244, 246, 249, 0.7);
+      --border: rgba(244, 246, 249, 0.08);
+      --font-display: 'Cormorant Garamond', serif;
+      --font-ui: 'Rajdhani', sans-serif;
+      --font-body: 'Source Sans 3', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+    header {
+      padding: 60px 60px 30px;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      font-family: var(--font-ui);
+      letter-spacing: 0.1em;
+      color: var(--white-dim);
+    }
+    .brand span { color: var(--red); font-weight: 700; }
+    h1 {
+      font-family: var(--font-display);
+      font-size: 56px;
+      font-weight: 600;
+      line-height: 1.1;
+      margin-top: 16px;
+    }
+    .subtitle {
+      color: var(--white-dim);
+      max-width: 640px;
+      margin-top: 12px;
+    }
+    main { padding: 40px 60px 80px; max-width: 900px; }
+    .briefing-card {
+      display: block;
+      border: 1px solid var(--border);
+      background: var(--navy-mid);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      text-decoration: none;
+      color: var(--white);
+    }
+    .briefing-card:hover { border-color: var(--red); }
+    .briefing-date {
+      font-family: var(--font-ui);
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      font-size: 14px;
+    }
+    .briefing-card h2 {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 600;
+      margin: 8px 0;
+    }
+    .briefing-card p { color: var(--white-dim); }
+    .briefing-tag {
+      display: inline-block;
+      margin-top: 14px;
+      font-family: var(--font-ui);
+      letter-spacing: 0.08em;
+      color: var(--red);
+      font-size: 14px;
+    }
+    footer {
+      padding: 30px 60px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    footer a { color: var(--white-dim); text-decoration: none; font-family: var(--font-ui); letter-spacing: 0.05em; }
+    footer a:hover { color: var(--red); }
+    .footer-disclaimer { color: var(--white-dim); font-size: 14px; max-width: 560px; }
+    @media (max-width: 700px) {
+      header, main, footer { padding-left: 24px; padding-right: 24px; }
+      h1 { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand"><span>SRM</span> Network — Grand Lakes &amp; Africa</div>
+    <h1>Briefings</h1>
+    <p class="subtitle">Open-source security analysis for professionals across the Great Lakes region and the African continent.</p>
+  </header>
+  <main>
+    <a class="briefing-card" href="senegal-scenarios-2026/index.html">
+      <div class="briefing-date">25 May 2026</div>
+      <h2>Sénégal: Three Scenarios</h2>
+      <p>Scenario Intelligence Flash. 48 hours. Two institutions decapitated. One country at a crossroads, and a Sahel watching every move.</p>
+      <span class="briefing-tag">Read the briefing →</span>
+    </a>
+    <a class="briefing-card" href="2026-141/index.html">
+      <div class="briefing-date">21 May 2026 · Issue 2026-141</div>
+      <h2>Daily Security Briefing 2026-141</h2>
+      <p>Consolidated open-source intelligence across geopolitical, health security, and operational threat domains, prepared for professionals across the Great Lakes and Africa region.</p>
+      <span class="briefing-tag">Read the briefing →</span>
+    </a>
+  </main>
+  <footer>
+    <div>
+      <a href="../index.html">Home</a>&nbsp;&nbsp;
+      <a href="https://www.linkedin.com/company/security-risk-monitoring-grand-lakes-africa/">LinkedIn</a>
+    </div>
+    <p class="footer-disclaimer">
+      The SRM Network is not a recruitment or job placement service. It is a closed, vetted security cluster for strategic and operational analysis, intelligence sharing, and professional networking.
+    </p>
+  </footer>
+</body>
+</html>
