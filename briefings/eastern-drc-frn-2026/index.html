@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SRM | Eastern DRC: A New Armed Coalition, a Verification Gap, and the Humanitarian Stakes</title>
+<meta name="description" content="SRM analysis: the FRN of Joseph Kabila, the gap between signed commitments and the ground, and what humanitarian actors should watch. SRM Research Team, 30 October 2026."/>
+<style>
+:root{--navy:#0A1628;--navy2:#0D1F3C;--panel:#101F38;--line:rgba(244,246,249,.14);--ink:#F4F6F9;--dim:rgba(244,246,249,.72);--faint:rgba(244,246,249,.45);--red:#C0392B;--gold:#C9A227}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--navy);color:var(--ink);font-family:Georgia,'Times New Roman',serif;line-height:1.65}
+a{color:var(--gold)}
+header.site{position:sticky;top:0;z-index:10;background:rgba(10,22,40,.97);border-bottom:1px solid var(--line);padding:12px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+header.site img{height:44px;width:44px;object-fit:contain;background:#fff;border-radius:6px;padding:3px}
+header.site .brand{font-weight:700;font-size:15px;letter-spacing:.04em}
+header.site nav{margin-left:auto;display:flex;gap:22px;align-items:center;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+header.site nav a{color:var(--dim);text-decoration:none}
+header.site nav a:hover{color:var(--ink)}
+.langsw{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.langsw a{padding:4px 12px;color:var(--dim);text-decoration:none;font-size:12px;letter-spacing:.08em}
+.langsw a.on{background:var(--red);color:#fff}
+main{max-width:880px;margin:0 auto;padding:44px 24px 20px}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--red);margin-bottom:14px}
+h1{font-size:clamp(32px,5vw,50px);font-weight:700;line-height:1.12;margin-bottom:16px}
+.meta{color:var(--faint);font-size:14px;letter-spacing:.06em;margin-bottom:8px}
+.meta b{color:var(--dim)}
+.lede{font-size:19px;color:var(--dim);line-height:1.6;margin:14px 0 26px}
+figure.hero{margin:26px 0 34px}
+figure.hero img{width:100%;height:auto;display:block;border:1px solid var(--line)}
+figure.hero figcaption{font-size:12px;color:var(--faint);margin-top:8px}
+h2{font-size:26px;font-weight:700;margin:38px 0 14px;line-height:1.25}
+h2 .no{color:var(--red);margin-right:10px}
+p{margin-bottom:14px;color:var(--ink)}
+p.dim,li{color:var(--dim)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+@media(max-width:700px){.cards{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);padding:20px}
+.card .ck{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.card h3{font-size:18px;font-weight:700;margin-bottom:8px;line-height:1.3}
+.card p{font-size:15px;color:var(--dim);margin-bottom:0}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 10px;border:1px solid;border-radius:999px;margin-top:12px}
+.chip.crit{color:#fca5a5;border-color:#b91c1c;background:rgba(185,28,28,.15)}
+.chip.high{color:#fbbf24;border-color:#b45309;background:rgba(180,83,9,.15)}
+.chip.elev{color:#fde68a;border-color:#8a6d1f;background:rgba(138,109,31,.15)}
+.chip.mon{color:#a7f3d0;border-color:#2e5c3f;background:rgba(46,92,63,.18)}
+.chip.prob{color:#fff;border-color:var(--red);background:var(--red);margin:0 0 10px}
+.callout{border-left:3px solid var(--red);background:rgba(192,57,43,.08);padding:16px 18px;margin:18px 0}
+.callout .cl{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.callout p{margin:0;color:var(--ink)}
+.callout.green{border-color:#2e7d4f;background:rgba(46,125,79,.10)}.callout.green .cl{color:#6ee7b7}
+.callout.amber{border-color:#b45309;background:rgba(180,83,9,.10)}.callout.amber .cl{color:#fbbf24}
+.stats{display:flex;gap:14px;flex-wrap:wrap;margin:20px 0}
+.stat{flex:1;min-width:140px;background:var(--panel);border:1px solid var(--line);padding:18px;text-align:center}
+.stat .n{font-size:34px;font-weight:700;color:#fff;line-height:1}
+.stat .l{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-top:6px}
+.timeline{margin:16px 0}
+.tl{display:flex;gap:18px;padding:14px 0;border-bottom:1px solid var(--line)}
+.tl .when{flex:0 0 170px;font-weight:700;color:var(--gold);font-size:15px}
+.tl .what{color:var(--dim);font-size:15px}
+.tl .what b{color:var(--ink)}
+@media(max-width:700px){.tl{flex-direction:column;gap:4px}.tl .when{flex:none}}
+table.mx{border-collapse:collapse;width:100%;margin:16px 0;font-size:13px}
+table.mx th,table.mx td{border:1px solid var(--line);padding:9px 8px;text-align:center}
+table.mx th{color:var(--faint);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+table.mx td.cd{font-weight:700;color:#fff;font-size:15px}
+td.lv1{background:#1d3b2a}td.lv2{background:#2e5c3f}td.lv3{background:#8a6d1f}td.lv4{background:#b45309}td.lv5{background:#c2410c}td.lv6{background:#b91c1c}td.lv7{background:#7f1d1d}
+table.reg{border-collapse:collapse;width:100%;margin:16px 0;font-size:15px}
+table.reg th,table.reg td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+table.reg th{color:var(--faint);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+table.reg td.c{font-weight:700;color:var(--gold);white-space:nowrap}
+ul{margin:0 0 14px 20px}li{margin-bottom:6px}
+.actors{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+@media(max-width:700px){.actors{grid-template-columns:1fr}}
+.srcs{border-top:1px solid var(--line);margin-top:40px;padding-top:18px;font-size:13px;color:var(--faint)}
+footer.site{border-top:1px solid var(--line);margin-top:34px;padding:28px 24px 40px;text-align:center;color:var(--faint);font-size:13px}
+footer.site .fl{margin-bottom:8px;color:var(--dim)}
+.backlink{display:inline-block;margin-top:26px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
+</style>
+</head>
+<body>
+<header class="site">
+  <img src="../../assets/srm-logo.jpg" alt="SRM — Security Risk Monitoring"/>
+  <div class="brand">SRM — Grand Lakes &amp; Africa</div>
+  <nav>
+    <a href="../../index.html">Home</a>
+    <a href="../index.html">Briefings</a>
+    <span class="langsw"><a class="on" href="#">EN</a><a class="" href="index-fr.html">FR</a></span>
+  </nav>
+</header>
+<main>
+  <div class="kicker">SRM Analysis · Great Lakes</div>
+  <h1>Eastern DRC: A New Armed Coalition, a Verification Gap, and the Humanitarian Stakes</h1>
+  <div class="meta"><b>30 October 2026</b> · SRM Research Team</div>
+  <p class="lede">A new coalition has been proclaimed in Goma. The agreements meant to contain the war are not verified on the ground. Between the two, humanitarian actors must now plan.</p>
+  <figure class="hero"><img src="../../assets/briefings/goma-kivu.jpg" alt="Goma and Mount Nyiragongo, North Kivu"/><figcaption>Photo: Goma with Mount Nyiragongo in the background, North Kivu, by MONUSCO Photos, CC BY-SA 2.0, via Wikimedia Commons.</figcaption></figure>
+  
+  <h2>A new actor on an old board</h2>
+  <p>On 12 October 2026, according to Reuters reporting, Joseph Kabila's Front pour la Renaissance Nationale (FRN) was launched in Goma, with figures from the AFC/M23 movement in deputy positions: a successor platform to AFC/M23, presented as a national political vehicle rather than a purely military one. President Félix Tshisekedi has accused Kabila of acting as a Rwandan proxy. Kabila and the FRN reject that characterisation. Both claims are on the record; neither has been independently established, and SRM treats them as positions, not findings.</p>
+  <p>What is established is movement on the ground. On 26 October, fighting between the FARDC and FRN/M23 elements was reported around Fizi and Walungu in South Kivu, the same axes humanitarian actors use to reach Minembwe, Kaziba and the Hauts Plateaux.</p>
+
+  <h2>What the UN experts document</h2>
+  <p>The final report of the UN Group of Experts on the DRC (S/2026/466, June 2026) documents that AFC/M23, with sustained support from the Rwanda Defence Force, expanded its territorial control, captured Uvira in December 2025 before vacating it under international pressure, and entrenched a parallel administration, including alternative banking and insurance mechanisms. The same report records that ceasefire and withdrawal commitments were only partially implemented, with withdrawals amounting to tactical repositioning, and that the DRC did not implement its commitments to neutralise the FDLR. It also documents a sharp evolution in tactics: uncrewed aerial systems, deep-strike capability against Kisangani airport, and jamming and spoofing that pose serious risks to civilian aviation.</p>
+  <p>The humanitarian baseline in that report is stark: in March 2026, 3.4 million people were internally displaced across Ituri and North and South Kivu, and over 60 per cent of the population of those provinces was living in extreme poverty.</p>
+
+  <h2>The verification gap</h2>
+  <p>The Washington and Doha tracks have produced commitments. What they have not produced is a verification presence able to say, week by week, who holds what ground, whose forces withdrew, and which armed actor controls the road a convoy needs tomorrow. The Group of Experts' finding, partial implementation and tactical repositioning, is what an unverified process looks like from the ground. For operators, the practical question is not what was signed. It is who can confirm, on the day, that a commitment is being kept.</p>
+
+  <h2>The humanitarian stakes</h2>
+  <p>Three consequences follow for humanitarian actors. <b>First, access negotiation fragments.</b> If the FRN is a distinct party and not simply a new label, existing understandings reached through the Doha, Washington and Luanda–Nairobi processes do not automatically bind it, and negotiators face a new interlocutor whose chain of command is unproven. <b>Second, isolation deepens where fighting concentrates.</b> The Group of Experts records that fighting in Minembwe, South Kivu, isolated the Banyamulenge population and cut off essential goods and humanitarian assistance. <b>Third, the operating environment compounds.</b> The latest OCHA situation reporting for the DRC (week 41, 5 to 11 October 2026) layers Ebola, cholera and mpox dynamics and continuing displacement in South Kivu on top of the conflict picture. Access, health security and protection risks now arrive together, not in sequence.</p>
+
+  <h2>What to watch</h2>
+  <ul>
+    <li><b>FRN cohesion:</b> defections, rival communiqués, or a split between its political presentation in Goma and M23 command on the ground.</li>
+    <li><b>Verification:</b> any mechanism, joint or third-party, that begins publishing ground truth on withdrawals and territorial control.</li>
+    <li><b>The Uvira corridor:</b> movement around Uvira and the Fizi–Walungu axes as the indicator of whether October's clashes were a probe or a campaign.</li>
+    <li><b>Minembwe:</b> whether humanitarian access to isolated communities is restored, negotiated, or further closed.</li>
+    <li><b>Air risk:</b> further drone or jamming activity near civilian air routes in the Kivus.</li>
+  </ul>
+
+  <div class="callout"><div class="cl">SRM Snap Call · 5 November 2026</div><p>This analysis is the subject of the next SRM Snap Call: "RDC–Rwanda: le FRN de Joseph Kabila et ses perspectives pour les acteurs humanitaires et la région", Thursday 5 November 2026, 09:00 New York · 15:00 Kinshasa · 16:00 Goma, in French, under the Chatham House rule, not recorded. With Daniel Mwendanga and Dr. Brown Walls. Free registration: <a href="https://form.jotform.com/262920153630046">form.jotform.com/262920153630046</a></p></div>
+  <p class="dim">Analysis by the SRM Research Team · Lead analyst: Daniel Mwendanga, Conflict, Peace &amp; Security Analyst and Researcher.</p>
+  <div class="srcs">Sources: <a href="https://www.ecoi.net/en/file/local/2142213/n2611394.pdf">UN Group of Experts on the DRC, Final Report S/2026/466 (June 2026)</a> · <a href="https://www.crisisgroup.org/rpt/africa/democratic-republic-congo-rwanda/320-m23-offensive-elusive-peace-great-lakes">International Crisis Group, "The M23 Offensive: Elusive Peace in the Great Lakes" (December 2025)</a> · <a href="https://reliefweb.int/report/democratic-republic-congo/crise-humanitaire-complexe-et-epidemies-republique-democratique-du-congo-rapport-de-situation-semaine-no-41-5-au-11-octobre-2026">OCHA via ReliefWeb, DRC Situation Report, Week 41 (October 2026)</a> · <a href="https://www.unhcr.org/in/emergencies/dr-congo-emergency">UNHCR, DR Congo Emergency</a> · Reuters reporting on the FRN launch (October 2026). Attributed claims are identified as such; SRM analysis is based on open sources.</div>
+  <a class="backlink" href="../index.html">← All briefings</a>
+</main>
+<footer class="site">
+  <div class="fl">SRM — Security Risk Monitoring · Grand Lakes &amp; Africa</div>
+  <div>Analysis by the SRM Research Team · African context in general, the Great Lakes crisis in particular, eastern DRC at the centre.</div>
+  <div>info@srmgrandlakes.org · +1 202 439 1448 · srmgrandlakes.org</div>
+</footer>
+</body>
+</html>
