@@ -1,131 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SRM Briefings — Grand Lakes & Africa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Rajdhani:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --navy: #0A1628;
-      --navy-mid: #0D1F3C;
-      --red: #C0392B;
-      --gold: #B8860B;
-      --white: #F4F6F9;
-      --white-dim: rgba(244, 246, 249, 0.7);
-      --border: rgba(244, 246, 249, 0.08);
-      --font-display: 'Cormorant Garamond', serif;
-      --font-ui: 'Rajdhani', sans-serif;
-      --font-body: 'Source Sans 3', sans-serif;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: var(--navy);
-      color: var(--white);
-      font-family: var(--font-body);
-      font-size: 16px;
-      line-height: 1.7;
-    }
-    header {
-      padding: 60px 60px 30px;
-      border-bottom: 1px solid var(--border);
-    }
-    .brand {
-      font-family: var(--font-ui);
-      letter-spacing: 0.1em;
-      color: var(--white-dim);
-    }
-    .brand span { color: var(--red); font-weight: 700; }
-    h1 {
-      font-family: var(--font-display);
-      font-size: 56px;
-      font-weight: 600;
-      line-height: 1.1;
-      margin-top: 16px;
-    }
-    .subtitle {
-      color: var(--white-dim);
-      max-width: 640px;
-      margin-top: 12px;
-    }
-    main { padding: 40px 60px 80px; max-width: 900px; }
-    .briefing-card {
-      display: block;
-      border: 1px solid var(--border);
-      background: var(--navy-mid);
-      padding: 28px 32px;
-      margin-bottom: 24px;
-      text-decoration: none;
-      color: var(--white);
-    }
-    .briefing-card:hover { border-color: var(--red); }
-    .briefing-date {
-      font-family: var(--font-ui);
-      letter-spacing: 0.08em;
-      color: var(--gold);
-      font-size: 14px;
-    }
-    .briefing-card h2 {
-      font-family: var(--font-display);
-      font-size: 32px;
-      font-weight: 600;
-      margin: 8px 0;
-    }
-    .briefing-card p { color: var(--white-dim); }
-    .briefing-tag {
-      display: inline-block;
-      margin-top: 14px;
-      font-family: var(--font-ui);
-      letter-spacing: 0.08em;
-      color: var(--red);
-      font-size: 14px;
-    }
-    footer {
-      padding: 30px 60px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-    }
-    footer a { color: var(--white-dim); text-decoration: none; font-family: var(--font-ui); letter-spacing: 0.05em; }
-    footer a:hover { color: var(--red); }
-    .footer-disclaimer { color: var(--white-dim); font-size: 14px; max-width: 560px; }
-    @media (max-width: 700px) {
-      header, main, footer { padding-left: 24px; padding-right: 24px; }
-      h1 { font-size: 40px; }
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SRM Briefings — Security Risk Monitoring, Grand Lakes & Africa</title>
+<meta name="description" content="Briefings and analysis from the SRM Research Team: the African context in general, the Great Lakes crisis in particular, eastern DRC at the centre."/>
+<style>
+:root{--navy:#0A1628;--navy2:#0D1F3C;--panel:#101F38;--line:rgba(244,246,249,.14);--ink:#F4F6F9;--dim:rgba(244,246,249,.72);--faint:rgba(244,246,249,.45);--red:#C0392B;--gold:#C9A227}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--navy);color:var(--ink);font-family:Georgia,'Times New Roman',serif;line-height:1.65}
+a{color:var(--gold)}
+header.site{position:sticky;top:0;z-index:10;background:rgba(10,22,40,.97);border-bottom:1px solid var(--line);padding:12px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+header.site img{height:44px;width:44px;object-fit:contain;background:#fff;border-radius:6px;padding:3px}
+header.site .brand{font-weight:700;font-size:15px;letter-spacing:.04em}
+header.site nav{margin-left:auto;display:flex;gap:22px;align-items:center;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+header.site nav a{color:var(--dim);text-decoration:none}
+header.site nav a:hover{color:var(--ink)}
+.langsw{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.langsw a{padding:4px 12px;color:var(--dim);text-decoration:none;font-size:12px;letter-spacing:.08em}
+.langsw a.on{background:var(--red);color:#fff}
+main{max-width:880px;margin:0 auto;padding:44px 24px 20px}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--red);margin-bottom:14px}
+h1{font-size:clamp(32px,5vw,50px);font-weight:700;line-height:1.12;margin-bottom:16px}
+.meta{color:var(--faint);font-size:14px;letter-spacing:.06em;margin-bottom:8px}
+.meta b{color:var(--dim)}
+.lede{font-size:19px;color:var(--dim);line-height:1.6;margin:14px 0 26px}
+figure.hero{margin:26px 0 34px}
+figure.hero img{width:100%;height:auto;display:block;border:1px solid var(--line)}
+figure.hero figcaption{font-size:12px;color:var(--faint);margin-top:8px}
+h2{font-size:26px;font-weight:700;margin:38px 0 14px;line-height:1.25}
+h2 .no{color:var(--red);margin-right:10px}
+p{margin-bottom:14px;color:var(--ink)}
+p.dim,li{color:var(--dim)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 8px}
+@media(max-width:700px){.cards{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);padding:20px}
+.card .ck{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.card h3{font-size:18px;font-weight:700;margin-bottom:8px;line-height:1.3}
+.card p{font-size:15px;color:var(--dim);margin-bottom:0}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 10px;border:1px solid;border-radius:999px;margin-top:12px}
+.chip.crit{color:#fca5a5;border-color:#b91c1c;background:rgba(185,28,28,.15)}
+.chip.high{color:#fbbf24;border-color:#b45309;background:rgba(180,83,9,.15)}
+.chip.elev{color:#fde68a;border-color:#8a6d1f;background:rgba(138,109,31,.15)}
+.chip.mon{color:#a7f3d0;border-color:#2e5c3f;background:rgba(46,92,63,.18)}
+.chip.prob{color:#fff;border-color:var(--red);background:var(--red);margin:0 0 10px}
+.callout{border-left:3px solid var(--red);background:rgba(192,57,43,.08);padding:16px 18px;margin:18px 0}
+.callout .cl{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.callout p{margin:0;color:var(--ink)}
+.callout.green{border-color:#2e7d4f;background:rgba(46,125,79,.10)}.callout.green .cl{color:#6ee7b7}
+.callout.amber{border-color:#b45309;background:rgba(180,83,9,.10)}.callout.amber .cl{color:#fbbf24}
+.stats{display:flex;gap:14px;flex-wrap:wrap;margin:20px 0}
+.stat{flex:1;min-width:140px;background:var(--panel);border:1px solid var(--line);padding:18px;text-align:center}
+.stat .n{font-size:34px;font-weight:700;color:#fff;line-height:1}
+.stat .l{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-top:6px}
+.timeline{margin:16px 0}
+.tl{display:flex;gap:18px;padding:14px 0;border-bottom:1px solid var(--line)}
+.tl .when{flex:0 0 170px;font-weight:700;color:var(--gold);font-size:15px}
+.tl .what{color:var(--dim);font-size:15px}
+.tl .what b{color:var(--ink)}
+@media(max-width:700px){.tl{flex-direction:column;gap:4px}.tl .when{flex:none}}
+table.mx{border-collapse:collapse;width:100%;margin:16px 0;font-size:13px}
+table.mx th,table.mx td{border:1px solid var(--line);padding:9px 8px;text-align:center}
+table.mx th{color:var(--faint);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+table.mx td.cd{font-weight:700;color:#fff;font-size:15px}
+td.lv1{background:#1d3b2a}td.lv2{background:#2e5c3f}td.lv3{background:#8a6d1f}td.lv4{background:#b45309}td.lv5{background:#c2410c}td.lv6{background:#b91c1c}td.lv7{background:#7f1d1d}
+table.reg{border-collapse:collapse;width:100%;margin:16px 0;font-size:15px}
+table.reg th,table.reg td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+table.reg th{color:var(--faint);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+table.reg td.c{font-weight:700;color:var(--gold);white-space:nowrap}
+ul{margin:0 0 14px 20px}li{margin-bottom:6px}
+.actors{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+@media(max-width:700px){.actors{grid-template-columns:1fr}}
+.srcs{border-top:1px solid var(--line);margin-top:40px;padding-top:18px;font-size:13px;color:var(--faint)}
+footer.site{border-top:1px solid var(--line);margin-top:34px;padding:28px 24px 40px;text-align:center;color:var(--faint);font-size:13px}
+footer.site .fl{margin-bottom:8px;color:var(--dim)}
+.backlink{display:inline-block;margin-top:26px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
+</style>
 </head>
 <body>
-  <header>
-    <div class="brand"><span>SRM</span> Network — Grand Lakes &amp; Africa</div>
-    <h1>Briefings</h1>
-    <p class="subtitle">Open-source security analysis for professionals across the Great Lakes region and the African continent.</p>
-  </header>
-  <main>
-    <a class="briefing-card" href="senegal-scenarios-2026/index.html">
-      <div class="briefing-date">25 May 2026</div>
-      <h2>Sénégal: Three Scenarios</h2>
-      <p>Scenario Intelligence Flash. 48 hours. Two institutions decapitated. One country at a crossroads, and a Sahel watching every move.</p>
-      <span class="briefing-tag">Read the briefing →</span>
-    </a>
-    <a class="briefing-card" href="2026-141/index.html">
-      <div class="briefing-date">21 May 2026 · Issue 2026-141</div>
-      <h2>Daily Security Briefing 2026-141</h2>
-      <p>Consolidated open-source intelligence across geopolitical, health security, and operational threat domains, prepared for professionals across the Great Lakes and Africa region.</p>
-      <span class="briefing-tag">Read the briefing →</span>
-    </a>
-  </main>
-  <footer>
-    <div>
-      <a href="../index.html">Home</a>&nbsp;&nbsp;
-      <a href="https://www.linkedin.com/company/security-risk-monitoring-grand-lakes-africa/">LinkedIn</a>
-    </div>
-    <p class="footer-disclaimer">
-      The SRM Network is not a recruitment or job placement service. It is a closed, vetted security cluster for strategic and operational analysis, intelligence sharing, and professional networking.
-    </p>
-  </footer>
+<header class="site">
+  <img src="../assets/srm-logo.jpg" alt="SRM — Security Risk Monitoring"/>
+  <div class="brand">SRM — Grand Lakes &amp; Africa</div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../index.html">Briefings</a>
+    <span class="langsw"><a class="on" href="#">EN</a><a class="" href="index-fr.html">FR</a></span>
+  </nav>
+</header>
+<main>
+  <div class="kicker">SRM Briefings</div>
+  <h1>Briefings & Analysis</h1>
+  <div class="meta"><b>SRM Research Team</b></div>
+  <p class="lede">Analysis from the SRM Research Team: the African context in general, the Great Lakes crisis in particular, eastern DRC at the centre.</p>
+  
+  
+  <div class="cards">
+    <div class="card"><div class="ck">SRM Analysis · 30 October 2026</div><h3><a href="eastern-drc-frn-2026/">Eastern DRC: A New Armed Coalition, a Verification Gap, and the Humanitarian Stakes</a></h3><p>The FRN of Joseph Kabila, the gap between signed commitments and the ground, and what humanitarian actors should watch next.</p></div>
+    <div class="card"><div class="ck">SRM Daily Briefing · 21 May 2026</div><h3><a href="2026-141/">Daily Security Briefing 2026-141</a></h3><p>Consolidated open-source intelligence across geopolitical, health security, and operational threat domains in the Great Lakes and Africa.</p></div>
+    <div class="card"><div class="ck">SRM Scenario Flash · 25 May 2026</div><h3><a href="senegal-scenarios-2026/">Sénégal: Three Scenarios</a></h3><p>Scenario intelligence flash: two institutions decapitated, one country at a crossroads, and a Sahel watching every move.</p></div>
+    <div class="card"><div class="ck">SRM Analysis · 23 May 2026</div><h3><a href="2026-141/briefings/senegal-2026-fracture/">Sénégal: Fracture au Sommet & Implications Régionales</a></h3><p>Fracture at the summit in Dakar and its regional implications, in French and English.</p></div>
+    <div class="card"><div class="ck">SRM Risk Matrix · 25 May 2026</div><h3><a href="senegal-scenarios-2026/briefings/ebola-drc-matrix-2026/">Ebola DRC 2026: Security Risk Matrix</a></h3><p>A security risk matrix for the DRC Ebola outbreak: health security read as operational risk.</p></div>
+  </div>
+  <div class="srcs">All analysis is open-source based and published for situational awareness.</div>
+  <a class="backlink" href="../index.html">← Back to home</a>
+</main>
+<footer class="site">
+  <div class="fl">SRM — Security Risk Monitoring · Grand Lakes &amp; Africa</div>
+  <div>Analysis by the SRM Research Team · African context in general, the Great Lakes crisis in particular, eastern DRC at the centre.</div>
+  <div>info@srmgrandlakes.org · +1 202 439 1448 · srmgrandlakes.org</div>
+</footer>
 </body>
 </html>
